@@ -1,0 +1,57 @@
+h1,
+h2,
+h3 {
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+h1 {
+  font-size: clamp(2.3rem, 5.2vw, 4rem);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+}
+h2 {
+  font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+  margin-bottom: 16px;
+}
+h3 {
+  font-size: 1.15rem;
+  letter-spacing: -0.01em;
+}
+.lead {
+  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  color: var(--ink-soft);
+  max-width: 60ch;
+}
+.center .lead {
+  margin-inline: auto;
+}
+.eyebrow,
+.kicker {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+.rule {
+  display: block;
+  width: 64px;
+  height: 2px;
+  background: var(--accent);
+  margin: 4px auto 22px;
+}
+
+/* Hindi: more line height, no negative tracking (Devanagari needs room) */
+:lang(hi) h1,
+:lang(hi) h2,
+:lang(hi) h3 {
+  letter-spacing: 0;
+  line-height: 1.35;
+}
+:lang(hi) body,
+:lang(hi) {
+  line-height: 1.75;
+}
+:lang(hi) h1 {
+  font-size: clamp(2rem, 4.4vw, 3.3rem);
+}

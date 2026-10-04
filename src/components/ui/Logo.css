@@ -1,0 +1,43 @@
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.logo--en {
+  display: block;
+  height: 46px;
+  width: auto;
+}
+.logo__mark {
+  height: 46px;
+  width: auto;
+}
+.logo--hi .logo__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+.logo--hi .logo__name {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--navy);
+}
+.logo--hi .logo__sub {
+  font-size: 0.82rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #0e8cbb;
+}
+.logo--light.logo--hi .logo__name,
+.logo--light.logo--hi .logo__sub {
+  color: #ffffff;
+}
+
+@media (max-width: 620px) {
+  .logo--en {
+    height: 40px;
+  }
+  .logo__mark {
+    height: 40px;
+  }
+}

@@ -1,0 +1,17 @@
+.footer {
+  background: var(--ink);
+  color: var(--cream);
+  padding-block: 44px 100px;
+}
+.footer__bar {
+  display: grid;
+  gap: 16px;
+  justify-items: start;
+}
+.footer p {
+  color: #b9c6d2;
+}
+.footer__small {
+  font-size: 0.85rem;
+  color: #7f93a5 !important;
+}

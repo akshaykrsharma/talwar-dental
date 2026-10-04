@@ -1,0 +1,14 @@
+/* Soft-coloured rounded square that holds an icon. */
+.icon-tile {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+.icon-tile--sm {
+  width: 48px;
+  height: 48px;
+}

@@ -1,0 +1,17 @@
+.error-fallback {
+  padding-block: 96px;
+}
+.error-fallback h1 {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+.error-fallback .lead {
+  margin-inline: auto;
+  margin-bottom: 24px;
+}
+.error-fallback__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}

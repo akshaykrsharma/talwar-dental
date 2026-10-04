@@ -1,0 +1,6 @@
+.welcome {
+  padding-block: clamp(64px, 8vw, 104px);
+}
+.welcome .btn {
+  margin-top: 28px;
+}

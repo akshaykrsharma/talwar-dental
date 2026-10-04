@@ -1,0 +1,24 @@
+:root {
+  --cream: #f8f5f0;
+  --sand: #efe7dd;
+  --ink: #16212c;
+  --navy: #034787;
+  --ink-soft: #53606c;
+  --accent: #0a6f9a;
+  --accent-soft: #dcebf3;
+  --line: #e2d9cd;
+  --white: #ffffff;
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-pill: 999px;
+  --font:
+    "Plus Jakarta Sans Variable", "Noto Sans Devanagari Variable", system-ui, -apple-system,
+    "Segoe UI", sans-serif;
+  --header-h: 76px;
+}
+
+@media (max-width: 960px) {
+  :root {
+    --header-h: 68px;
+  }
+}

@@ -1,0 +1,31 @@
+.wrap {
+  width: min(1200px, 100% - 48px);
+  margin-inline: auto;
+}
+.wrap--narrow {
+  width: min(780px, 100% - 48px);
+}
+.center {
+  text-align: center;
+}
+.section {
+  padding-block: clamp(64px, 9vw, 120px);
+}
+.band--sand {
+  background: var(--sand);
+}
+.band--ink {
+  background: var(--ink);
+  color: var(--cream);
+}
+.section__head {
+  max-width: 640px;
+  margin: 0 auto clamp(36px, 5vw, 56px);
+}
+
+@media (max-width: 620px) {
+  .wrap,
+  .wrap--narrow {
+    width: min(1200px, 100% - 32px);
+  }
+}
