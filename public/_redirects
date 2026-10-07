@@ -1,0 +1,14 @@
+# Redirects for Cloudflare Pages. Ignored by Apache/LiteSpeed hosts, which
+# read .htaccess instead.
+
+# Leftovers from the WordPress placeholder site this replaced. Anything
+# already indexed lands on the home page instead of a 404.
+/privacy-policy/* / 301
+/customer-cabinet/* / 301
+/hello-world/* / 301
+/wp-admin/* / 301
+/wp-login.php / 301
+/wp-content/* / 301
+/wp-includes/* / 301
+/wp-json/* / 301
+/sitemap_index.xml /sitemap.xml 301

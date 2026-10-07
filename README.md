@@ -76,12 +76,53 @@ The site is static, so the contents of `dist/` go to any web host (Hostinger, Ne
 2. `npm run check` — lint, formatting, tests and the production build.
 3. Upload the **contents** of `dist/` (not the folder itself).
 
-`public/.htaccess` is copied into `dist/` by the build. It forces HTTPS, redirects `www` to the
-bare domain, enables compression and caches hashed assets for a year while keeping the HTML
-always revalidated. Hostinger runs LiteSpeed, which reads it; hosts that ignore `.htaccess`
-simply skip it.
+The build copies three server-config files from `public/` into `dist/`. Each host reads only
+the one it understands and ignores the others, so the same build works anywhere:
 
-### Hostinger (current host)
+| File         | Read by               | Covers                                                        |
+| ------------ | --------------------- | ------------------------------------------------------------- |
+| `.htaccess`  | Hostinger (LiteSpeed) | HTTPS, `www` redirect, compression, caching, security headers |
+| `_headers`   | Cloudflare Pages      | caching and security headers                                  |
+| `_redirects` | Cloudflare Pages      | redirects for the retired WordPress URLs                      |
+
+Keep them in step. A rule added to one is not picked up by the other.
+
+### Cloudflare Pages
+
+Pages builds from the repository, so there is no upload step and no FTP credentials.
+
+In the Cloudflare dashboard, go to **Workers & Pages → Create → Pages → Connect to Git**, pick
+this repository, and set:
+
+| Setting           | Value                                            |
+| ----------------- | ------------------------------------------------ |
+| Production branch | `master`                                         |
+| Build command     | `npm run build`                                  |
+| Build output      | `dist`                                           |
+| Environment var   | `VITE_SITE_URL` = `https://talwardentalcare.com` |
+
+Every push to `master` then builds and publishes. Pull requests get their own preview URL.
+
+The site goes live on `<project>.pages.dev` straight away, which is worth using to check
+everything before any DNS change. To put it on the real domain, add it under **Custom domains**.
+That requires the domain's nameservers to point at Cloudflare: the domain is registered through
+Hostinger and currently uses Hostinger's `dns-parking.com` nameservers, so the change is made in
+hPanel → **Domains → DNS / Nameservers**, and takes a few hours to propagate.
+
+Cloudflare issues the certificate and serves HTTPS automatically. Redirecting `www` to the bare
+domain is not done in `_redirects`, which matches on paths only — add both hostnames as custom
+domains and create a **Redirect Rule** for `www`, under **Rules → Redirect Rules**.
+
+To publish from your own machine instead, without the Git integration:
+
+```bash
+npm run deploy:cloudflare
+```
+
+That builds, strips the build manifest and runs `wrangler pages deploy`. The first run opens a
+browser to authorise and offers to create the project.
+
+### Hostinger
 
 Pushing to `master` releases the site. `.github/workflows/ci.yml` runs lint, formatting and
 tests, builds with the real `VITE_SITE_URL`, and uploads `dist/` to `public_html` over FTPS.

@@ -52,7 +52,7 @@ jobs:
           VITE_SITE_URL: https://talwardentalcare.com
 
       # The build manifest is only needed by the prerender step, not by visitors.
-      - run: rm -rf dist/.vite
+      - run: rm -rf dist/.vite dist/.DS_Store
 
       - name: Upload dist/ to Hostinger
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
