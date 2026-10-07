@@ -7,7 +7,8 @@ import jsxA11y from "eslint-plugin-jsx-a11y";
 import prettier from "eslint-config-prettier";
 
 export default [
-  { ignores: ["dist", "dist-single", "coverage", "node_modules"] },
+  // talwar-dental-site is where the upload zip gets extracted when checking a build.
+  { ignores: ["dist", "dist-single", "talwar-dental-site", "coverage", "node_modules"] },
   js.configs.recommended,
   {
     files: ["**/*.{js,jsx}"],

@@ -96,17 +96,21 @@ values from hPanel → **Files → FTP Accounts**:
 | `FTP_USERNAME` | FTP username, e.g. `u123456789.talwardentalcare.com` |
 | `FTP_PASSWORD` | that FTP account's password                          |
 
-You can also start a release by hand from the **Actions** tab (**Run workflow**).
+You can also start a release by hand from the **Actions** tab (**Run workflow**), which offers a
+**Delete everything in public_html before uploading** checkbox.
 
 #### First release only: clearing the old WordPress site
 
 The domain previously served a placeholder WordPress install. Before the first deploy:
 
-1. hPanel → **Websites → Dashboard**, take a backup so the old install can be restored.
-2. hPanel → **WordPress → Overview**, delete the WordPress installation (this also drops its
-   database), or simply empty `public_html` in the File Manager.
-3. Deploy, then purge the server cache in hPanel → **Advanced → LiteSpeed Cache Manager**, or
-   old pages keep being served.
+1. hPanel → **Websites → Dashboard → Files → Backups**, take a files and database backup so the
+   old install can be restored.
+2. Run the workflow from the **Actions** tab with the **wipe public_html** box ticked. That
+   empties the directory and uploads the new site in one go. Later pushes upload only what
+   changed, so leave the box unticked from then on.
+3. Drop the orphaned WordPress database in hPanel → **Databases → Management**.
+4. Purge the server cache in hPanel → **Advanced → Cache Manager**, or old pages keep being
+   served from LiteSpeed.
 
 `.htaccess` already redirects the retired WordPress URLs (`/privacy-policy/`, `/hello-world/`,
 `/customer-cabinet/`, `/wp-*`, `/sitemap_index.xml`) so nothing already indexed returns a 404.
@@ -115,7 +119,22 @@ Resubmit `https://talwardentalcare.com/sitemap.xml` in Google Search Console aft
 After a release, check `https://talwardentalcare.com`, `https://talwardentalcare.com/hi/`, the
 WhatsApp booking button, and that `http://` and `www.` both redirect to the canonical address.
 
-#### Releasing without the Action
+#### Releasing from your own machine
+
+`scripts/deploy-hostinger.py` uploads `dist/` over FTPS using the Python standard library, so
+there is nothing to install. Put the same three FTP values in a `.ftp-credentials` file in the
+project root (git-ignored, one `KEY=value` per line), then:
+
+```bash
+npm run build
+python3 scripts/deploy-hostinger.py --list     # what is on the server now
+python3 scripts/deploy-hostinger.py            # dry run, changes nothing
+python3 scripts/deploy-hostinger.py --apply    # upload
+```
+
+Add `--wipe` to empty `public_html` before uploading. Nothing is ever changed without `--apply`.
+
+#### Releasing through the File Manager
 
 ```bash
 npm run check

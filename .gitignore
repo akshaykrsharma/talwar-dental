@@ -2,6 +2,9 @@ node_modules
 dist
 dist-single
 talwar-dental-site.zip
+talwar-dental-site
+.ftp-credentials
+__pycache__
 coverage
 .env.local
 .env.*.local

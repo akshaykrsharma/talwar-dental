@@ -5,6 +5,11 @@ on:
     branches: [master]
   pull_request:
   workflow_dispatch:
+    inputs:
+      wipe_public_html:
+        description: "Delete everything in public_html before uploading. Needed once, to clear the old WordPress site."
+        type: boolean
+        default: false
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -61,7 +66,7 @@ jobs:
           port: 21
           local-dir: ./dist/
           server-dir: public_html/
-          # Keeps a sync state file on the server so only changed files upload.
-          # For a first deploy into a directory that already has other files,
-          # clear public_html by hand first.
-          dangerous-clean-slate: false
+          # Normally a sync state file on the server keeps uploads incremental.
+          # Running the workflow by hand with wipe_public_html empties the
+          # directory first, which is how the old WordPress site is cleared.
+          dangerous-clean-slate: ${{ inputs.wipe_public_html == true }}
