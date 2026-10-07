@@ -87,23 +87,26 @@ the one it understands and ignores the others, so the same build works anywhere:
 
 Keep them in step. A rule added to one is not picked up by the other.
 
-### Cloudflare Pages
+### Cloudflare
 
-Pages builds from the repository, so there is no upload step and no FTP credentials.
+`wrangler.json` publishes the static `dist/` directory with `wrangler deploy`. Without that file,
+Wrangler treats the repo as an unconfigured Vite app and tries to parse `vite.config.js` with a
+parser that rejects `import.meta`. That is the `Error parsing file: vite.config.js` failure.
 
-In the Cloudflare dashboard, go to **Workers & Pages → Create → Pages → Connect to Git**, pick
-this repository, and set:
+In the Cloudflare dashboard, connect this repository and set:
 
 | Setting           | Value                                            |
 | ----------------- | ------------------------------------------------ |
 | Production branch | `master`                                         |
 | Build command     | `npm run build`                                  |
-| Build output      | `dist`                                           |
+| Deploy command    | `npx wrangler deploy`                            |
 | Environment var   | `VITE_SITE_URL` = `https://talwardentalcare.com` |
 
-Every push to `master` then builds and publishes. Pull requests get their own preview URL.
+The Worker name in the dashboard must match `name` in `wrangler.json` (`talwar-dental`). Every
+push to `master` then builds and publishes. `_headers` and `_redirects` in `dist/` are applied
+on upload; `public/.assetsignore` keeps the Vite manifest out of the upload.
 
-The site goes live on `<project>.pages.dev` straight away, which is worth using to check
+The site goes live on `<worker>.workers.dev` straight away, which is worth using to check
 everything before any DNS change. To put it on the real domain, add it under **Custom domains**.
 That requires the domain's nameservers to point at Cloudflare: the domain is registered through
 Hostinger and currently uses Hostinger's `dns-parking.com` nameservers, so the change is made in
@@ -119,8 +122,8 @@ To publish from your own machine instead, without the Git integration:
 npm run deploy:cloudflare
 ```
 
-That builds, strips the build manifest and runs `wrangler pages deploy`. The first run opens a
-browser to authorise and offers to create the project.
+That builds, strips the build manifest and runs `wrangler deploy`. The first run opens a
+browser to authorise.
 
 ### Hostinger
 
