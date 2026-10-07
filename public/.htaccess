@@ -1,0 +1,56 @@
+# Server rules for the live site (Hostinger runs LiteSpeed, which reads .htaccess).
+# Copied into dist/ by the build, so it ships with every upload.
+
+Options -Indexes
+DirectoryIndex index.html
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Serve everything over HTTPS. Hostinger proxies the site through its CDN,
+  # which terminates TLS, so %{HTTPS} alone reads as off on a secure request
+  # and would redirect forever. Both signals have to say plain HTTP.
+  RewriteCond %{HTTPS} !=on
+  RewriteCond %{HTTP:X-Forwarded-Proto} !=https
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # One address only: talwardentalcare.com, without www.
+  # This must match VITE_SITE_URL in .env.production.
+  RewriteCond %{HTTP_HOST} ^www\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # Leftovers from the WordPress placeholder site this replaced. Anything
+  # already indexed lands on the home page instead of a 404.
+  RewriteRule ^(privacy-policy|customer-cabinet|hello-world)/?$ / [L,R=301]
+  RewriteRule ^(wp-admin|wp-login\.php|wp-content|wp-includes|wp-json) / [L,R=301]
+  RewriteRule ^sitemap_index\.xml$ /sitemap.xml [L,R=301]
+</IfModule>
+
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json
+  AddOutputFilterByType DEFLATE application/manifest+json image/svg+xml
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Asset file names contain a content hash, so they can be cached forever.
+  <FilesMatch "\.(js|css|woff2|jpg|jpeg|png|webp|svg)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+
+  # The pages themselves must always be revalidated, or visitors keep an old
+  # index.html that points at assets which no longer exist.
+  <FilesMatch "\.(html|webmanifest|xml|txt)$">
+    Header set Cache-Control "public, max-age=0, must-revalidate"
+  </FilesMatch>
+
+  Header set X-Content-Type-Options "nosniff"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
+
+<IfModule mod_mime.c>
+  AddType application/manifest+json .webmanifest
+  AddType image/webp .webp
+  AddType font/woff2 .woff2
+  AddType image/svg+xml .svg
+</IfModule>

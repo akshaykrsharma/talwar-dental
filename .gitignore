@@ -1,6 +1,7 @@
 node_modules
 dist
 dist-single
+talwar-dental-site.zip
 coverage
 .env.local
 .env.*.local

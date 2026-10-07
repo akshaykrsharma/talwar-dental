@@ -59,8 +59,18 @@ function pageHtml({ template, body, lang, seo, schema, entries }) {
   const prefix = lang === "hi" ? "../" : "./";
   const pageUrl = lang === "hi" ? `${siteUrl}/hi/` : `${siteUrl}/`;
   let html = template;
-  html = replaceTag(html, /<html lang="[^"]*">/, `<html lang="${lang === "hi" ? "hi" : "en"}">`, "html lang");
-  html = replaceTag(html, /<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(seo.title)}</title>`, "title");
+  html = replaceTag(
+    html,
+    /<html lang="[^"]*">/,
+    `<html lang="${lang === "hi" ? "hi" : "en"}">`,
+    "html lang",
+  );
+  html = replaceTag(
+    html,
+    /<title>[\s\S]*?<\/title>/,
+    `<title>${escapeHtml(seo.title)}</title>`,
+    "title",
+  );
   html = setMeta(html, "name", "description", seo.description);
   html = setMeta(html, "property", "og:title", seo.title);
   html = setMeta(html, "property", "og:description", seo.description);

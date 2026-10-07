@@ -70,11 +70,62 @@ GitHub Actions (`.github/workflows/ci.yml`) runs the same checks on every push a
 
 ## Deploying
 
-Upload the contents of `dist/` to any static host (Netlify, Vercel, Cloudflare Pages, GitHub Pages, ordinary web hosting).
+The site is static, so the contents of `dist/` go to any web host (Hostinger, Netlify, Vercel, Cloudflare Pages, GitHub Pages).
 
 1. Set `VITE_SITE_URL` in `.env.production` to the real address (no trailing slash).
-2. `npm run build`
-3. Upload `dist/`.
+2. `npm run check` — lint, formatting, tests and the production build.
+3. Upload the **contents** of `dist/` (not the folder itself).
+
+`public/.htaccess` is copied into `dist/` by the build. It forces HTTPS, redirects `www` to the
+bare domain, enables compression and caches hashed assets for a year while keeping the HTML
+always revalidated. Hostinger runs LiteSpeed, which reads it; hosts that ignore `.htaccess`
+simply skip it.
+
+### Hostinger (current host)
+
+Pushing to `master` releases the site. `.github/workflows/ci.yml` runs lint, formatting and
+tests, builds with the real `VITE_SITE_URL`, and uploads `dist/` to `public_html` over FTPS.
+It only uploads files that changed, and it never deploys when the checks fail.
+
+Three repository secrets are required (**Settings → Secrets and variables → Actions**). Take the
+values from hPanel → **Files → FTP Accounts**:
+
+| Secret         | Value                                                |
+| -------------- | ---------------------------------------------------- |
+| `FTP_SERVER`   | FTP hostname or IP, e.g. `ftp.talwardentalcare.com`  |
+| `FTP_USERNAME` | FTP username, e.g. `u123456789.talwardentalcare.com` |
+| `FTP_PASSWORD` | that FTP account's password                          |
+
+You can also start a release by hand from the **Actions** tab (**Run workflow**).
+
+#### First release only: clearing the old WordPress site
+
+The domain previously served a placeholder WordPress install. Before the first deploy:
+
+1. hPanel → **Websites → Dashboard**, take a backup so the old install can be restored.
+2. hPanel → **WordPress → Overview**, delete the WordPress installation (this also drops its
+   database), or simply empty `public_html` in the File Manager.
+3. Deploy, then purge the server cache in hPanel → **Advanced → LiteSpeed Cache Manager**, or
+   old pages keep being served.
+
+`.htaccess` already redirects the retired WordPress URLs (`/privacy-policy/`, `/hello-world/`,
+`/customer-cabinet/`, `/wp-*`, `/sitemap_index.xml`) so nothing already indexed returns a 404.
+Resubmit `https://talwardentalcare.com/sitemap.xml` in Google Search Console afterwards.
+
+After a release, check `https://talwardentalcare.com`, `https://talwardentalcare.com/hi/`, the
+WhatsApp booking button, and that `http://` and `www.` both redirect to the canonical address.
+
+#### Releasing without the Action
+
+```bash
+npm run check
+cd dist && zip -r -q ../talwar-dental-site.zip . -x "./.vite/*" && cd ..
+```
+
+In hPanel → **Files → File Manager**, open `public_html`, remove the old site files, upload
+`talwar-dental-site.zip` and choose **Extract**, then delete the zip. `.htaccess` is hidden by
+default — turn on hidden files in the File Manager settings to confirm it arrived. Do not upload
+`dist/.vite/`; it is a build manifest used only by the prerender step.
 
 ## Things to confirm with the clinic
 

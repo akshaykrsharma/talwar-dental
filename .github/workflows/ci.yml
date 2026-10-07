@@ -2,8 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master]
   pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   check:
@@ -21,3 +26,42 @@ jobs:
       - run: npm run build
         env:
           VITE_SITE_URL: https://www.example.com
+
+  deploy:
+    # Only the real branch ships, and only once the checks above are green.
+    needs: check
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    concurrency:
+      group: deploy-hostinger
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+        env:
+          VITE_SITE_URL: https://talwardentalcare.com
+
+      # The build manifest is only needed by the prerender step, not by visitors.
+      - run: rm -rf dist/.vite
+
+      - name: Upload dist/ to Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          # Hostinger supports explicit FTP over TLS. If the connection is
+          # refused, change this to `ftp` (unencrypted, port 21).
+          protocol: ftps
+          port: 21
+          local-dir: ./dist/
+          server-dir: public_html/
+          # Keeps a sync state file on the server so only changed files upload.
+          # For a first deploy into a directory that already has other files,
+          # clear public_html by hand first.
+          dangerous-clean-slate: false
