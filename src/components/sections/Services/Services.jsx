@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import { SECTION_IDS } from "@/config/site";
 import { useLanguage } from "@/hooks/useLanguage";
+import { languageHref } from "@/utils/languagePath";
 import Container from "@/components/ui/Container";
 import IconTile from "@/components/ui/IconTile";
 import Section from "@/components/ui/Section";
@@ -9,7 +10,7 @@ import "./Services.css";
 
 /** Treatment cards. Choosing one pre-selects it in the booking form (state is owned by <App>). */
 export default function Services({ onSelectService }) {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
   const s = t.services;
 
   return (
@@ -22,9 +23,16 @@ export default function Services({ onSelectService }) {
               <IconTile name={item.id} />
               <h3>{item.title}</h3>
               <p>{item.text}</p>
-              <button type="button" className="link" onClick={() => onSelectService(item.id)}>
-                {s.cta}
-              </button>
+              <div className="card__actions">
+                {item.pageId ? (
+                  <a className="link" href={languageHref(lang, item.pageId)}>
+                    {s.more}
+                  </a>
+                ) : null}
+                <button type="button" className="link" onClick={() => onSelectService(item.id)}>
+                  {s.cta}
+                </button>
+              </div>
             </article>
           ))}
         </div>

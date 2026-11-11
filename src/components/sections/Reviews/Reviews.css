@@ -66,6 +66,13 @@
   padding-block: 6px;
   animation: marquee var(--marquee-duration, 60s) linear infinite;
 }
+.marquee__group {
+  display: flex;
+  flex: none;
+  gap: var(--gap);
+  min-width: 100vw;
+  justify-content: space-around;
+}
 .marquee:hover .marquee__track,
 .marquee:focus-within .marquee__track,
 .marquee.is-paused .marquee__track {
@@ -78,6 +85,7 @@
 }
 .review {
   display: flex;
+  flex: none;
   flex-direction: column;
   gap: 16px;
   width: clamp(290px, 82vw, 400px);
@@ -164,10 +172,14 @@
   .marquee__track {
     animation: none;
   }
+  .marquee__group {
+    min-width: 0;
+  }
   .review {
     scroll-snap-align: start;
   }
   .review[aria-hidden="true"],
+  .marquee__group[aria-hidden="true"],
   .reviews__bar {
     display: none;
   }

@@ -192,7 +192,7 @@ default — turn on hidden files in the File Manager settings to confirm it arri
 
 ## Things to confirm with the clinic
 
-- **Opening hours** in `content/*.js` (`contact.hours`, `hero.badgeSub`) and `config/site.js` (`openingHours`). They must all say the same thing.
+- **Opening hours**: Monday-Saturday 10 AM-8 PM; Sunday 10 AM-1:30 PM. Keep the translated `clinicHours` and hero badge copy in `content/*.js` aligned with `config/site.js` (`openingHoursSpecification`), which generates the clinic schema.
 - **Overall rating** in `config/site.js`: currently the Justdial figure. Use the Google Business Profile rating once confirmed, and change `source` to `"Google"`.
 - **Doctor memberships and qualifications** in `content/*.js`.
 - **Hindi wording**: have a Hindi speaker proofread `content/hi.js`.

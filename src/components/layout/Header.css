@@ -29,7 +29,8 @@
   padding: 6px 2px;
   border-bottom: 2px solid transparent;
 }
-.nav a:hover {
+.nav a:hover,
+.nav a[aria-current="page"] {
   border-color: var(--accent);
 }
 

@@ -115,6 +115,20 @@
   color: var(--ink-soft);
   padding-block: 4px;
 }
+.doctor__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px 22px;
+}
+.doctor__actions .link {
+  font-weight: 600;
+  color: var(--accent);
+  text-underline-offset: 4px;
+}
+.doctor__actions .link:hover {
+  color: var(--ink);
+}
 
 @media (max-width: 960px) {
   .doctor {

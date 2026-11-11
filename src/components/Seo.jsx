@@ -1,8 +1,9 @@
 import { useEffect } from "react";
+import PropTypes from "prop-types";
 import { CLINIC, SITE_URL } from "@/config/site";
 import { languageHref } from "@/utils/languagePath";
 import { useLanguage } from "@/hooks/useLanguage";
-import { buildDentistSchema } from "@/utils/structuredData";
+import { buildPageSchema } from "@/utils/structuredData";
 
 const LD_ID = "ld-json-clinic";
 
@@ -30,15 +31,18 @@ function setCanonical(href) {
  * Keeps <title>, meta tags and structured data in sync with the active language.
  * Renders nothing. (Static fallbacks for crawlers that skip JavaScript live in index.html.)
  */
-export default function Seo() {
+export default function Seo({ pageId = "home" }) {
   const { lang, t } = useLanguage();
 
   useEffect(() => {
-    document.title = t.seo.title;
-    const pageUrl = `${SITE_URL}${languageHref(lang)}`;
-    setMeta("name", "description", t.seo.description);
-    setMeta("property", "og:title", t.seo.title);
-    setMeta("property", "og:description", t.seo.description);
+    const page = pageId === "home" ? null : t.pages[pageId];
+    const seo = page ? page.seo : t.seo;
+    document.title = seo.title;
+    const pagePath = languageHref(lang, pageId);
+    const pageUrl = `${SITE_URL}${pagePath}`;
+    setMeta("name", "description", seo.description);
+    setMeta("property", "og:title", seo.title);
+    setMeta("property", "og:description", seo.description);
     setMeta("property", "og:url", pageUrl);
     setMeta("property", "og:locale", lang === "hi" ? "hi_IN" : "en_IN");
     if (SITE_URL) setCanonical(pageUrl);
@@ -51,9 +55,21 @@ export default function Seo() {
       document.head.appendChild(script);
     }
     script.textContent = JSON.stringify(
-      buildDentistSchema({ clinic: CLINIC, siteUrl: SITE_URL, description: t.seo.description }),
+      buildPageSchema({
+        clinic: CLINIC,
+        siteUrl: SITE_URL,
+        description: seo.description,
+        pagePath,
+        pageName: page?.title,
+        homeName: t.clinicName,
+        faqs: page?.faqs,
+      }),
     );
-  }, [lang, t]);
+  }, [lang, t, pageId]);
 
   return null;
 }
+
+Seo.propTypes = {
+  pageId: PropTypes.string,
+};

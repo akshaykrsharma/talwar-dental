@@ -1,17 +1,60 @@
+import { PAGES } from "@/config/site";
+
 /**
- * The Hindi page lives at /hi/ so Google can index it separately from English.
- * Any other path is the English page.
+ * Strip index.html and a trailing slash so /hi, /hi/ and /hi/index.html match.
  * @param {string} pathname
- * @returns {"hi" | null}
+ * @returns {string}
  */
-export function languageFromLocation(pathname) {
+function normalize(pathname) {
   const withoutFile = String(pathname || "/").replace(/\/index\.html$/, "");
-  const path = withoutFile.length > 1 ? withoutFile.replace(/\/+$/, "") : withoutFile;
-  if (path === "/hi" || path.endsWith("/hi")) return "hi";
-  return null;
+  if (withoutFile.length > 1) return withoutFile.replace(/\/+$/, "");
+  return withoutFile || "/";
 }
 
-/** Crawlable URL for a language. Root-absolute so it works from / and from /hi/. */
-export function languageHref(code) {
-  return code === "hi" ? "/hi/" : "/";
+/**
+ * The Hindi site lives under /hi/, including treatment pages such as /hi/dr-anish-talwar/.
+ * Any other path is English, regardless of a previously saved language choice.
+ * @param {string} pathname
+ * @returns {"hi" | "en"}
+ */
+export function languageFromLocation(pathname) {
+  const path = normalize(pathname);
+  if (path === "/hi" || path.startsWith("/hi/")) return "hi";
+  return "en";
+}
+
+/**
+ * Which page a URL is. Unknown paths are treated as the homepage.
+ * @param {string} pathname
+ * @returns {string}
+ */
+export function pageFromLocation(pathname) {
+  let path = normalize(pathname);
+  if (path === "/hi") path = "/";
+  else if (path.startsWith("/hi/")) path = path.slice(3) || "/";
+  if (path === "" || path === "/") return "home";
+  const withSlash = path.endsWith("/") ? path : `${path}/`;
+  return PAGES.find((page) => page.en === withSlash)?.id ?? "home";
+}
+
+/**
+ * Crawlable URL for a language and page. Root-absolute so it works from any depth.
+ * @param {string} code
+ * @param {string} [pageId]
+ */
+export function languageHref(code, pageId = "home") {
+  const page = PAGES.find((item) => item.id === pageId) ?? PAGES[0];
+  return code === "hi" ? page.hi : page.en;
+}
+
+/**
+ * Section links stay on the page when it has those sections, and point at the
+ * homepage when it does not.
+ * @param {string} pageId
+ * @param {string} lang
+ * @param {string} sectionId
+ */
+export function sectionHref(pageId, lang, sectionId) {
+  if (pageId === "home") return `#${sectionId}`;
+  return `${languageHref(lang, "home")}#${sectionId}`;
 }

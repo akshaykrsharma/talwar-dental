@@ -1,4 +1,5 @@
 import { useState } from "react";
+import PropTypes from "prop-types";
 import { useLanguage } from "@/hooks/useLanguage";
 import { cx } from "@/utils/classNames";
 import Container from "@/components/ui/Container";
@@ -13,26 +14,35 @@ const SECONDS_PER_CARD = 12;
  * The list is rendered twice so the CSS animation can loop seamlessly; the copy is aria-hidden.
  * Visitors can pause it with the button (WCAG: moving content needs a pause control).
  */
-export default function ReviewsMarquee() {
+export default function ReviewsMarquee({ reviews, title: regionTitle }) {
   const { t } = useLanguage();
   const [paused, setPaused] = useState(false);
-  const { items, stars, source, title, pause, play } = t.reviews;
+  const { stars, source, title, pause, play } = t.reviews;
+  const items = reviews ?? t.reviews.items;
 
   return (
     <>
-      <div className={cx("marquee", paused && "is-paused")} role="region" aria-label={title}>
+      <div
+        className={cx("marquee", paused && "is-paused")}
+        role="region"
+        aria-label={regionTitle ?? title}
+      >
         <div
           className="marquee__track"
           style={{ "--marquee-duration": `${items.length * SECONDS_PER_CARD}s` }}
         >
-          {[...items, ...items].map((review, i) => (
-            <ReviewCard
-              key={`${review.name}-${i}`}
-              review={review}
-              starsLabel={stars}
-              sourceLabel={source}
-              hidden={i >= items.length}
-            />
+          {[false, true].map((hidden) => (
+            <div className="marquee__group" key={String(hidden)} aria-hidden={hidden || undefined}>
+              {items.map((review) => (
+                <ReviewCard
+                  key={review.name}
+                  review={review}
+                  starsLabel={stars}
+                  sourceLabel={source}
+                  hidden={hidden}
+                />
+              ))}
+            </div>
           ))}
         </div>
       </div>
@@ -51,3 +61,14 @@ export default function ReviewsMarquee() {
     </>
   );
 }
+
+ReviewsMarquee.propTypes = {
+  reviews: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      topic: PropTypes.string.isRequired,
+      quote: PropTypes.string.isRequired,
+    }),
+  ),
+  title: PropTypes.string,
+};

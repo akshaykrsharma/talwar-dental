@@ -29,6 +29,7 @@ export default function Hero() {
         <div className="hero__copy">
           <p className="eyebrow">{t.hero.eyebrow}</p>
           <h1>{t.hero.title}</h1>
+          <p className="hero__subtitle">{t.hero.subtitle}</p>
           <p className="lead">{t.hero.text}</p>
 
           <dl className="stats">

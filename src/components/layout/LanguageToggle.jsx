@@ -1,14 +1,15 @@
+import PropTypes from "prop-types";
 import { LANGUAGES } from "@/config/site";
 import { useLanguage } from "@/hooks/useLanguage";
 import { cx } from "@/utils/classNames";
 import { languageHref } from "@/utils/languagePath";
 import "./LanguageToggle.css";
 
-/** EN / हिं switch. The href is a real page so crawlers can index both languages. */
-export default function LanguageToggle() {
+/** EN / हिं switch. The href is the same page in the other language, so crawlers can index both. */
+export default function LanguageToggle({ pageId = "home" }) {
   const { lang, t, setLang } = useLanguage();
   const next = LANGUAGES.find((l) => l.code !== lang);
-  const href = languageHref(next.code);
+  const href = languageHref(next.code, pageId);
 
   return (
     <a
@@ -30,3 +31,7 @@ export default function LanguageToggle() {
     </a>
   );
 }
+
+LanguageToggle.propTypes = {
+  pageId: PropTypes.string,
+};

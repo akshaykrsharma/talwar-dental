@@ -33,6 +33,49 @@ describe("<App />", () => {
     expect(document.documentElement.lang).toBe("en");
   });
 
+  it.each([
+    ["/", "en"],
+    ["/hi/", "hi"],
+    ["/dr-anish-talwar/", "en"],
+    ["/hi/dr-anish-talwar/", "hi"],
+  ])("links the menu to indexable pages on %s", (path, lang) => {
+    window.history.pushState(null, "", path);
+    renderApp();
+    const nav = within(screen.getByRole("navigation", { name: content[lang].nav.label }));
+    const root = lang === "hi" ? "/hi" : "";
+    expect(nav.getByRole("link", { name: content[lang].nav.about })).toHaveAttribute(
+      "href",
+      `${root}/dr-anish-talwar/`,
+    );
+    expect(nav.getByRole("link", { name: content[lang].nav.implants })).toHaveAttribute(
+      "href",
+      `${root}/dental-implants-mansarovar-jaipur/`,
+    );
+    expect(nav.getByRole("link", { name: content[lang].nav.rct })).toHaveAttribute(
+      "href",
+      `${root}/root-canal-treatment-mansarovar/`,
+    );
+    const onHome = path === "/" || path === "/hi/";
+    const sectionPrefix = onHome ? "" : `${root}/`;
+    expect(nav.getByRole("link", { name: content[lang].nav.reviews })).toHaveAttribute(
+      "href",
+      `${sectionPrefix}#reviews`,
+    );
+    expect(nav.getByRole("link", { name: content[lang].nav.contact })).toHaveAttribute(
+      "href",
+      `${sectionPrefix}#contact`,
+    );
+    if (onHome) {
+      for (const id of ["about", "services", "oneroof", "reviews", "contact"]) {
+        expect(document.getElementById(id)).toBeInTheDocument();
+      }
+      expect(screen.getByRole("link", { name: content[lang].doctor.profile })).toHaveAttribute(
+        "href",
+        `${root}/dr-anish-talwar/`,
+      );
+    }
+  });
+
   it("switches the whole page to Hindi and remembers the choice", async () => {
     const user = userEvent.setup();
     renderApp();
@@ -47,10 +90,85 @@ describe("<App />", () => {
     expect(window.localStorage.getItem("talwar-lang")).toBe("hi");
   });
 
-  it("starts in the language saved from the last visit", () => {
+  it.each([
+    ["/", content.en.hero.title, content.en.seo.title],
+    ["/dr-anish-talwar/", content.en.pages.doctor.title, content.en.pages.doctor.seo.title],
+    [
+      "/dental-implants-mansarovar-jaipur/",
+      content.en.pages.implants.title,
+      content.en.pages.implants.seo.title,
+    ],
+    [
+      "/root-canal-treatment-mansarovar/",
+      content.en.pages.rct.title,
+      content.en.pages.rct.seo.title,
+    ],
+  ])("keeps %s in English even after a Hindi visit", (path, heading, title) => {
     window.localStorage.setItem("talwar-lang", "hi");
+    window.history.pushState(null, "", path);
     renderApp();
-    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(content.hi.hero.title);
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(heading);
+    expect(document.title).toBe(title);
+    expect(document.documentElement.lang).toBe("en");
+    expect(window.localStorage.getItem("talwar-lang")).toBe("en");
+  });
+
+  it("renders a treatment page from its URL and offers the Hindi version", () => {
+    window.history.pushState(null, "", "/dental-implants-mansarovar-jaipur/");
+    renderApp();
+
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(
+      content.en.pages.implants.title,
+    );
+    expect(screen.getByRole("link", { name: content.en.a11y.toggleLang })).toHaveAttribute(
+      "href",
+      "/hi/dental-implants-mansarovar-jaipur/",
+    );
+    expect(document.title).toBe(content.en.pages.implants.seo.title);
+  });
+
+  it("gives the doctor page scrolling reviews with a working pause control", async () => {
+    window.history.pushState(null, "", "/dr-anish-talwar/");
+    const user = userEvent.setup();
+    renderApp();
+    const region = screen.getByRole("region", { name: content.en.pages.doctor.reviewsTitle });
+    const count = content.en.pages.doctor.reviewNames.length;
+    expect(region.querySelectorAll(".review")).toHaveLength(count * 2);
+    expect(region.querySelectorAll('.review[aria-hidden="true"]')).toHaveLength(count);
+    await user.click(screen.getByRole("button", { name: content.en.reviews.pause }));
+    expect(region).toHaveClass("is-paused");
+    await user.click(screen.getByRole("button", { name: content.en.reviews.play }));
+    expect(region).not.toHaveClass("is-paused");
+  });
+
+  it("shows the doctor portrait and books from the profile without leaving the page", async () => {
+    window.history.pushState(null, "", "/dr-anish-talwar/");
+    const user = userEvent.setup();
+    renderApp();
+    expect(screen.getByRole("img", { name: content.en.doctor.name })).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: content.en.pages.doctor.book })).toHaveAttribute(
+      "href",
+      "#contact",
+    );
+    expect(document.getElementById("contact")).toBeInTheDocument();
+    await user.type(screen.getByLabelText(content.en.contact.form.name), "Ravi Sharma");
+    await user.type(screen.getByLabelText(content.en.contact.form.phone), "9829076830");
+    await user.selectOptions(screen.getByLabelText(content.en.contact.form.service), "rct");
+    await user.click(screen.getByRole("button", { name: content.en.contact.form.submit }));
+    expect(window.open).toHaveBeenCalledTimes(1);
+    expect(decodeURIComponent(window.open.mock.calls[0][0])).toContain(
+      content.en.services.items.find((item) => item.id === "rct").title,
+    );
+  });
+
+  it("renders the Hindi root canal page from its URL", () => {
+    window.localStorage.setItem("talwar-lang", "en");
+    window.history.pushState(null, "", "/hi/root-canal-treatment-mansarovar/");
+    renderApp();
+
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(content.hi.pages.rct.title);
+    expect(document.documentElement.lang).toBe("hi");
+    expect(document.title).toBe(content.hi.pages.rct.seo.title);
   });
 
   it("sets the page title and structured data for search engines", () => {

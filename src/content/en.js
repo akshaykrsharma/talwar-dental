@@ -3,11 +3,15 @@
  * Keep this file's structure identical to the other language file (a unit test enforces it).
  * Placeholders such as {count} are filled in by utils/format.js.
  */
+const clinicHours = "Mon-Sat: 10 AM-8 PM; Sun: 10 AM-1:30 PM";
+
 const en = {
   clinicName: "Talwar Dental Care",
   nav: {
-    about: "About",
+    about: "Doctor",
     services: "Treatments",
+    implants: "Implants",
+    rct: "Root canal",
     clinic: "Clinic",
     reviews: "Reviews",
     contact: "Contact",
@@ -18,8 +22,9 @@ const en = {
   },
   hero: {
     eyebrow: "Dental implants & smile care in Mansarovar, Jaipur",
-    title: "Calm, precise dental care for a smile you're proud of",
-    text: "At Talwar Dental Care, Dr. Anish Talwar explains every step, treats with care, and plans each case around how you want to eat, speak and smile.",
+    title: "Dentist in Mansarovar, Jaipur",
+    subtitle: "Calm, precise dental care for a smile you're proud of",
+    text: "At Talwar Dental Care on Shipra Path, Mansarovar, Jaipur, Dr. Anish Talwar and the clinical team provide dental implants, root canal treatment and preventive care, with a treatment plan explained before care begins.",
     primary: "Book appointment",
     secondary: "Explore treatments",
     stats: [
@@ -32,12 +37,12 @@ const en = {
         label: "Oral & Maxillofacial Surgery",
       },
       {
-        value: "9–6",
-        label: "open every day",
+        value: "7",
+        label: "days a week",
       },
     ],
-    badgeTitle: "Open every day",
-    badgeSub: "9 AM – 6 PM",
+    badgeTitle: "Mon-Sat: 10 AM-8 PM",
+    badgeSub: "Sun: 10 AM-1:30 PM",
     slideshow: {
       label: "Clinic photo gallery",
       prev: "Previous photo",
@@ -116,14 +121,17 @@ const en = {
       },
     ],
     cta: "Book a consultation",
+    profile: "Read the full profile",
   },
   services: {
     title: "Treatments for every stage of your smile",
     text: "Choose a treatment to start your booking, or call us if you are not sure what you need.",
     cta: "Book this treatment",
+    more: "Learn more",
     items: [
       {
         id: "implants",
+        pageId: "implants",
         title: "Dental implants",
         text: "Single implants to full-mouth rehabilitation, with immediate fixed teeth where suitable.",
       },
@@ -134,8 +142,9 @@ const en = {
       },
       {
         id: "rct",
+        pageId: "rct",
         title: "Root canal treatment",
-        text: "Gentle, pain-free RCT, often completed in a single sitting.",
+        text: "Root canal treatment planned around your tooth, often completed in a single sitting.",
       },
       {
         id: "surgery",
@@ -156,7 +165,7 @@ const en = {
   },
   oneRoof: {
     title: "Comprehensive dental care under one roof",
-    text: "Complete diagnosis and treatment under one roof, with no external referrals.",
+    text: "In-house dental imaging and a treatment plan explained before care begins.",
     imageAlt: "Digital dental X-ray unit at Talwar Dental Care",
     items: [
       {
@@ -172,7 +181,7 @@ const en = {
       {
         id: "rct",
         title: "Root canal treatment",
-        text: "Pain-free procedures to save infected teeth.",
+        text: "Treatment to help preserve infected teeth, following an individual assessment.",
       },
       {
         id: "braces",
@@ -183,7 +192,7 @@ const en = {
   },
   reviews: {
     title: "What patients say",
-    text: "Real Google reviews from patients of Talwar Dental Care.",
+    text: "Patient experiences and independent ratings of Talwar Dental Care.",
     source: "Google review",
     outOf: "out of 5",
     cta: "Read more reviews on Google",
@@ -357,7 +366,7 @@ const en = {
     address: "79/14, Shipra Path, Sector 7, Mansarovar, Jaipur, Rajasthan 302020",
     phoneLabel: "Phone",
     hoursLabel: "Clinic hours",
-    hours: "Every day, 9 AM – 6 PM",
+    hours: clinicHours,
     directions: "Get directions",
     form: {
       name: "Your name",
@@ -378,6 +387,7 @@ const en = {
   },
   footer: {
     tagline: "Dental implants & smile care in Mansarovar, Jaipur.",
+    pagesLabel: "Clinic pages",
     rights: "All rights reserved.",
   },
   a11y: {
@@ -385,10 +395,191 @@ const en = {
     skip: "Skip to content",
     whatsapp: "WhatsApp",
   },
+  pages: {
+    doctor: {
+      nav: "Dr. Anish Talwar",
+      seo: {
+        title: "Dr. Anish Talwar, Dentist in Mansarovar | Talwar Dental Care",
+        description:
+          "Dr. Anish Talwar, BDS, MDS Oral & Maxillofacial Surgery, practices at Talwar Dental Care, 79/14 Shipra Path, Mansarovar, Jaipur. Call 098290 76830.",
+      },
+      kicker: "Dentist in Mansarovar",
+      title: "Dr. Anish Talwar",
+      lead: "Dr. Anish Talwar is the dentist, implantologist and oral and maxillofacial surgeon at Talwar Dental Care, 79/14 Shipra Path, Sector 7, Mansarovar, Jaipur.",
+      aboutTitle: "About Dr. Anish Talwar",
+      about: [
+        "He holds a BDS and an MDS in Oral & Maxillofacial Surgery, with ten years of clinical practice. He is a member of the Association of Oral and Maxillofacial Surgeons of India, the Indian Dental Association, and the International Congress of Oral Implantologists.",
+        "Every visit starts with a diagnosis, a clear plan and a conversation about the options. Patients often say he explains each step, from the treatment plan through aftercare, and that care is arranged so they stay at ease, including if they are nervous.",
+        "Digital X-rays are taken in the clinic, so diagnosis and treatment stay in one place. For implants he plans immediate fixed teeth wherever that is clinically suitable. Root canal treatment is often completed in a single sitting. He also provides wisdom-tooth removal and other oral surgery, crowns, gum care, fillings and dentures.",
+      ],
+      reviewed: "Reviewed by Dr. Anish Talwar, BDS, MDS (Oral & Maxillofacial Surgery).",
+      sections: [
+        {
+          heading: "How a visit is planned",
+          text: "Every treatment starts with a diagnosis, a clear plan and a conversation about your options. Patients often say he explains each step, from the plan through aftercare.",
+        },
+        {
+          heading: "Care under one roof",
+          text: "Digital X-rays are taken in the clinic, so diagnosis and treatment stay in one place. For implants, the plan includes immediate fixed teeth wherever that is clinically suitable.",
+        },
+      ],
+      pointsTitle: "Qualifications and memberships",
+      points: [
+        "BDS",
+        "MDS – Oral & Maxillofacial Surgery",
+        "10 years of clinical practice",
+        "Member, Association of Oral and Maxillofacial Surgeons of India",
+        "Member, Indian Dental Association",
+        "Member, International Congress of Oral Implantologists",
+      ],
+      faqsTitle: "Common questions",
+      faqs: [
+        {
+          q: "Where is the clinic?",
+          a: "79/14, Shipra Path, Sector 7, Mansarovar, Jaipur, Rajasthan 302020.",
+        },
+        {
+          q: "What are the clinic hours?",
+          a: clinicHours,
+        },
+        {
+          q: "Which treatments does Dr. Talwar provide?",
+          a: "Dental implants, root canal treatment, oral surgery, crowns, gum care, fillings and dentures.",
+        },
+        {
+          q: "How do I book?",
+          a: "Call 098290 76830, or send a WhatsApp message from the contact form.",
+        },
+      ],
+      reviewsTitle: "What patients say",
+      reviewNames: ["Kanika Sharma", "Anubhav Parashar", "Sumat Kumar"],
+      book: "Book a consultation",
+      visitTitle: "Visit the clinic",
+      relatedTitle: "Treatments",
+      related: [
+        { pageId: "implants", label: "Dental implants in Mansarovar" },
+        { pageId: "rct", label: "Root canal treatment in Mansarovar" },
+      ],
+    },
+    implants: {
+      nav: "Dental implants",
+      seo: {
+        title: "Dental Implants in Mansarovar, Jaipur | Talwar Dental Care",
+        description:
+          "Single-tooth and full-mouth dental implants at Talwar Dental Care, Shipra Path, Mansarovar. Dr. Anish Talwar is an MDS oral and maxillofacial surgeon. Call 098290 76830.",
+      },
+      kicker: "Mansarovar, Jaipur",
+      title: "Dental implants in Mansarovar, Jaipur",
+      lead: "Talwar Dental Care plans single implants and full-mouth implant treatment at 79/14 Shipra Path, Mansarovar. Dr. Anish Talwar, MDS in Oral & Maxillofacial Surgery, explains the plan before treatment starts.",
+      reviewed: "Reviewed by Dr. Anish Talwar, BDS, MDS (Oral & Maxillofacial Surgery).",
+      sections: [
+        {
+          heading: "Who implant treatment is for",
+          text: "A dental implant replaces a missing tooth root. The plan may be one tooth, several teeth, or a full jaw. It depends on the X-ray and on how you want to eat and speak.",
+        },
+        {
+          heading: "Fixed teeth, when suitable",
+          text: "Where it is clinically suitable, the clinic plans a fixed set of teeth from the day of surgery so you are not left without teeth. This is not possible in every case. Dr. Talwar will say so after the X-ray.",
+        },
+      ],
+      pointsTitle: "What the visit includes",
+      points: [
+        "In-house digital X-ray",
+        "A clear plan and a conversation about your options",
+        "Implant placement by an oral and maxillofacial surgeon",
+        "A plan for fixed teeth where that is clinically suitable",
+      ],
+      faqsTitle: "Common questions",
+      faqs: [
+        {
+          q: "Who places the implants?",
+          a: "Dr. Anish Talwar, who holds an MDS in Oral & Maxillofacial Surgery.",
+        },
+        {
+          q: "Can I have teeth the same day?",
+          a: "Only where it is clinically suitable. Dr. Talwar assesses your case individually and explains whether immediate fixed teeth are an option before treatment.",
+        },
+        {
+          q: "Do you treat one missing tooth and a full mouth?",
+          a: "Yes. Both single implants and full-mouth rehabilitation are planned at this clinic.",
+        },
+        {
+          q: "Where is the clinic, and when is it open?",
+          a: `79/14, Shipra Path, Sector 7, Mansarovar, Jaipur 302020. ${clinicHours}. Call 098290 76830.`,
+        },
+      ],
+      reviewsTitle: "What patients say about implants",
+      reviewNames: ["Yash Vardhan Sharma", "Dk Goel", "Dilkhush Kushwah"],
+      book: "Book an implant consultation",
+      visitTitle: "Visit the clinic",
+      relatedTitle: "Related pages",
+      related: [
+        { pageId: "doctor", label: "Dr. Anish Talwar" },
+        { pageId: "rct", label: "Root canal treatment in Mansarovar" },
+      ],
+    },
+    rct: {
+      nav: "Root canal treatment",
+      seo: {
+        title: "Root Canal Treatment in Mansarovar, Jaipur | Talwar Dental Care",
+        description:
+          "Root canal treatment at Talwar Dental Care, Shipra Path, Mansarovar, often finished in a single sitting. Dr. Anish Talwar, MDS Oral & Maxillofacial Surgery. Call 098290 76830.",
+      },
+      kicker: "Mansarovar, Jaipur",
+      title: "Root canal treatment in Mansarovar, Jaipur",
+      lead: "Talwar Dental Care provides root canal treatment on Shipra Path, Mansarovar. Many patients finish the treatment in a single sitting, after the tooth has been examined and the plan explained.",
+      reviewed: "Reviewed by Dr. Anish Talwar, BDS, MDS (Oral & Maxillofacial Surgery).",
+      sections: [
+        {
+          heading: "When a root canal is considered",
+          text: "A root canal treats an infected or painful tooth so it can stay in place. It is not the right choice for every tooth. The visit starts with an examination and an X-ray taken in the clinic.",
+        },
+        {
+          heading: "What patients report",
+          text: "Patients often describe the treatment as comfortable, including people who arrived nervous or in pain. Comfort varies from person to person. The team explains each step before it happens.",
+        },
+      ],
+      pointsTitle: "What the visit includes",
+      points: [
+        "Examination and an in-house digital X-ray",
+        "A plan explained before treatment",
+        "Treatment often completed in a single sitting",
+        "Aftercare explained before you leave",
+      ],
+      faqsTitle: "Common questions",
+      faqs: [
+        {
+          q: "Is a root canal always finished in one visit?",
+          a: "Often, not always. The tooth and the X-ray decide. The doctor will tell you what your tooth needs.",
+        },
+        {
+          q: "What does treatment feel like?",
+          a: "Patients often say it felt comfortable. The clinic explains what to expect for your tooth before starting.",
+        },
+        {
+          q: "Who does the treatment?",
+          a: "Dr. Anish Talwar and the clinical team at Talwar Dental Care.",
+        },
+        {
+          q: "How do I book?",
+          a: `Call 098290 76830 or use the WhatsApp form. ${clinicHours}. Visit 79/14 Shipra Path, Mansarovar.`,
+        },
+      ],
+      reviewsTitle: "What patients say about root canal treatment",
+      reviewNames: ["Suman Sharma", "Laduram Sharma", "Harsh Sundesha"],
+      book: "Book a root canal visit",
+      visitTitle: "Visit the clinic",
+      relatedTitle: "Related pages",
+      related: [
+        { pageId: "doctor", label: "Dr. Anish Talwar" },
+        { pageId: "implants", label: "Dental implants in Mansarovar" },
+      ],
+    },
+  },
   seo: {
-    title: "Talwar Dental Care | Dental Implants & Smile Care in Mansarovar, Jaipur",
+    title: "Dentist in Mansarovar, Jaipur | Talwar Dental Care",
     description:
-      "Talwar Dental Care in Mansarovar, Jaipur. Dr. Anish Talwar (BDS, MDS Oral & Maxillofacial Surgery) offers dental implants, smile makeovers, root canal and gum treatment.",
+      "Dr. Anish Talwar, MDS Oral & Maxillofacial Surgery, at Talwar Dental Care, 79/14 Shipra Path, Mansarovar, Jaipur. Implants and root canal treatment. Call 098290 76830.",
   },
   error: {
     title: "Something went wrong",

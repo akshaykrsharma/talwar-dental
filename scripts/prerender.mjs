@@ -1,4 +1,4 @@
-// After `vite build`, write the rendered page into dist/index.html and dist/hi/index.html.
+// After `vite build`, write each language and page into dist, plus the sitemap.
 // Crawlers then see the headings, copy and clinic details without running JavaScript.
 import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -38,6 +38,20 @@ function setHref(html, rel, href) {
   return replaceTag(html, pattern, `$1${href}$2`, `link rel=${rel}`);
 }
 
+function setHreflang(html, lang, href) {
+  const pattern = new RegExp(
+    `(<link\\b[^>]*\\brel=["']alternate["'][^>]*\\bhreflang=["']${lang}["'][^>]*\\bhref=["'])[^"']*(["'])`,
+    "i",
+  );
+  return replaceTag(html, pattern, `$1${href}$2`, `hreflang=${lang}`);
+}
+
+/** ./ from the site root becomes ../ or ../../ from a nested page. */
+function assetPrefix(pagePath) {
+  const depth = pagePath.split("/").filter(Boolean).length;
+  return depth === 0 ? "./" : "../".repeat(depth);
+}
+
 function assetLookup(manifest) {
   return Object.entries(manifest)
     .filter(([, meta]) => meta && meta.file)
@@ -47,7 +61,7 @@ function assetLookup(manifest) {
 function rewriteAssets(html, entries, prefix) {
   return html.replace(/(\s(?:src|href)=")([^"]+)(")/g, (full, before, url, after) => {
     if (/^(?:https?:|data:|tel:|mailto:|#)/.test(url)) return full;
-    if (url === "/" || url === "/hi" || url === "/hi/" || url.startsWith("/#")) return full;
+    if (url.startsWith("/") && !url.startsWith("/assets/")) return full;
     const clean = url.split("?")[0];
     const match = entries.find(([key]) => clean.endsWith(key));
     if (!match) return full;
@@ -55,9 +69,9 @@ function rewriteAssets(html, entries, prefix) {
   });
 }
 
-function pageHtml({ template, body, lang, seo, schema, entries }) {
-  const prefix = lang === "hi" ? "../" : "./";
-  const pageUrl = lang === "hi" ? `${siteUrl}/hi/` : `${siteUrl}/`;
+function pageHtml({ template, body, lang, path, alternate, seo, schema, entries }) {
+  const prefix = assetPrefix(path);
+  const pageUrl = `${siteUrl}${path}`;
   let html = template;
   html = replaceTag(
     html,
@@ -77,6 +91,9 @@ function pageHtml({ template, body, lang, seo, schema, entries }) {
   html = setMeta(html, "property", "og:url", pageUrl);
   html = setMeta(html, "property", "og:locale", lang === "hi" ? "hi_IN" : "en_IN");
   html = setHref(html, "canonical", pageUrl);
+  html = setHreflang(html, "en", `${siteUrl}${alternate.en}`);
+  html = setHreflang(html, "hi", `${siteUrl}${alternate.hi}`);
+  html = setHreflang(html, "x-default", `${siteUrl}${alternate.en}`);
   const json = JSON.stringify(schema).replace(/</g, "\\u003c");
   html = html.replace(
     "</head>",
@@ -84,10 +101,16 @@ function pageHtml({ template, body, lang, seo, schema, entries }) {
   );
   const rendered = rewriteAssets(body, entries, prefix);
   html = html.replace('<div id="root"></div>', `<div id="root">${rendered}</div>`);
-  if (lang === "hi") {
-    html = html.replace(/(\s(?:src|href)=")\.\//g, "$1../");
-  }
+  if (prefix !== "./") html = html.replace(/(\s(?:src|href)=")\.\//g, `$1${prefix}`);
   return html;
+}
+
+function sitemapXml(pages) {
+  const urls = pages
+    .flatMap((page) => [page.en, page.hi])
+    .map((path) => `  <url>\n    <loc>${siteUrl}${path}</loc>\n  </url>`)
+    .join("\n");
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
 const vite = await createServer({
@@ -100,34 +123,54 @@ const vite = await createServer({
 
 try {
   const { render } = await vite.ssrLoadModule("/src/entry-server.jsx");
-  const { buildDentistSchema } = await vite.ssrLoadModule("/src/utils/structuredData.js");
-  const { CLINIC } = await vite.ssrLoadModule("/src/config/site.js");
+  const { buildPageSchema } = await vite.ssrLoadModule("/src/utils/structuredData.js");
+  const { CLINIC, PAGES } = await vite.ssrLoadModule("/src/config/site.js");
   const { content } = await vite.ssrLoadModule("/src/content/index.js");
   const manifest = JSON.parse(readFileSync(join(dist, ".vite/manifest.json"), "utf8"));
   const entries = assetLookup(manifest);
   const template = readFileSync(join(dist, "index.html"), "utf8");
 
-  for (const lang of ["en", "hi"]) {
-    const schema = buildDentistSchema({
-      clinic: CLINIC,
-      siteUrl,
-      description: content[lang].seo.description,
-    });
-    const html = pageHtml({
-      template,
-      body: render(lang),
-      lang,
-      seo: content[lang].seo,
-      schema,
-      entries,
-    });
-    if (!html.includes("<h1>") || !html.includes("ld-json-clinic")) {
-      throw new Error(`prerender: ${lang} page is missing the heading or structured data`);
+  for (const page of PAGES) {
+    for (const lang of ["en", "hi"]) {
+      const path = page[lang];
+      const pageContent = page.id === "home" ? null : content[lang].pages[page.id];
+      const seo = pageContent ? pageContent.seo : content[lang].seo;
+      const schema = buildPageSchema({
+        clinic: CLINIC,
+        siteUrl,
+        description: seo.description,
+        pagePath: path,
+        pageName: pageContent?.title,
+        homeName: content[lang].clinicName,
+        faqs: pageContent?.faqs,
+      });
+      const html = pageHtml({
+        template,
+        body: render(lang, page.id),
+        lang,
+        path,
+        alternate: page,
+        seo,
+        schema,
+        entries,
+      });
+      const heading =
+        page.id === "home" ? content[lang].hero.title : content[lang].pages[page.id].title;
+      if (!html.includes(escapeHtml(heading)) || !html.includes("ld-json-clinic")) {
+        throw new Error(`prerender: ${lang} ${path} is missing the heading or structured data`);
+      }
+      if (!html.includes(`<link rel="canonical" href="${siteUrl}${path}"`)) {
+        throw new Error(`prerender: ${lang} ${path} canonical is wrong`);
+      }
+      const file = path === "/" ? join(dist, "index.html") : join(dist, path, "index.html");
+      mkdirSync(join(file, ".."), { recursive: true });
+      writeFileSync(file, html);
     }
-    const file = lang === "hi" ? join(dist, "hi/index.html") : join(dist, "index.html");
-    if (lang === "hi") mkdirSync(join(dist, "hi"), { recursive: true });
-    writeFileSync(file, html);
   }
+
+  const sitemap = sitemapXml(PAGES);
+  writeFileSync(join(dist, "sitemap.xml"), sitemap);
+  writeFileSync(join(root, "public/sitemap.xml"), sitemap);
 } finally {
   await vite.close();
 }

@@ -1,11 +1,14 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import PropTypes from "prop-types";
 import { SECTION_IDS } from "@/config/site";
+import { pageFromLocation } from "@/utils/languagePath";
 import { scrollToId } from "@/utils/scroll";
 import Seo from "@/components/Seo";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
 import QuickBar from "@/components/layout/QuickBar";
 import SkipLink from "@/components/layout/SkipLink";
+import ArticlePage from "@/components/pages/ArticlePage";
 import Contact from "@/components/sections/Contact/Contact";
 import Doctor from "@/components/sections/Doctor/Doctor";
 import Hero from "@/components/sections/Hero/Hero";
@@ -14,9 +17,22 @@ import Reviews from "@/components/sections/Reviews/Reviews";
 import Services from "@/components/sections/Services/Services";
 import Welcome from "@/components/sections/Welcome/Welcome";
 
-export default function App() {
+function readPageId(initialPageId) {
+  if (initialPageId) return initialPageId;
+  if (typeof window === "undefined") return "home";
+  return pageFromLocation(window.location.pathname);
+}
+
+export default function App({ initialPageId }) {
+  const [pageId, setPageId] = useState(() => readPageId(initialPageId));
   // The chosen treatment is shared: a service card sets it, the booking form shows it.
   const [service, setService] = useState("");
+
+  useEffect(() => {
+    const sync = () => setPageId(pageFromLocation(window.location.pathname));
+    window.addEventListener("popstate", sync);
+    return () => window.removeEventListener("popstate", sync);
+  }, []);
 
   const handleSelectService = useCallback((id) => {
     setService(id);
@@ -25,20 +41,30 @@ export default function App() {
 
   return (
     <>
-      <Seo />
+      <Seo pageId={pageId} />
       <SkipLink />
-      <Header />
+      <Header pageId={pageId} />
       <main id="main">
-        <Hero />
-        <Welcome />
-        <Doctor />
-        <Services onSelectService={handleSelectService} />
-        <OneRoof />
-        <Reviews />
-        <Contact service={service} onServiceChange={setService} />
+        {pageId === "home" ? (
+          <>
+            <Hero />
+            <Welcome />
+            <Doctor />
+            <Services onSelectService={handleSelectService} />
+            <OneRoof />
+            <Reviews />
+            <Contact service={service} onServiceChange={setService} />
+          </>
+        ) : (
+          <ArticlePage pageId={pageId} service={service} onServiceChange={setService} />
+        )}
       </main>
       <Footer />
-      <QuickBar />
+      <QuickBar pageId={pageId} />
     </>
   );
 }
+
+App.propTypes = {
+  initialPageId: PropTypes.string,
+};

@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import { SECTION_IDS } from "@/config/site";
 import { doctorPortrait } from "@/assets/images";
 import { useLanguage } from "@/hooks/useLanguage";
+import { languageHref } from "@/utils/languagePath";
 import { anchor } from "@/utils/scroll";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
@@ -28,7 +29,7 @@ BulletList.propTypes = {
 };
 
 export default function Doctor() {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
   const d = t.doctor;
 
   return (
@@ -74,7 +75,12 @@ export default function Doctor() {
             <BulletList title={d.memTitle} items={d.mems} />
           </div>
 
-          <Button href={anchor(SECTION_IDS.contact)}>{d.cta}</Button>
+          <div className="doctor__actions">
+            <Button href={anchor(SECTION_IDS.contact)}>{d.cta}</Button>
+            <a className="link" href={languageHref(lang, "doctor")}>
+              {d.profile}
+            </a>
+          </div>
         </div>
       </Container>
     </Section>

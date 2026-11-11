@@ -33,6 +33,32 @@ describe("translations", () => {
     expect(placeholders(content.hi.reviews.basis)).toEqual(placeholders(content.en.reviews.basis));
   });
 
+  it("keeps the confirmed clinic hours consistent in contact details and FAQs", () => {
+    expect(content.en.contact.hours).toBe("Mon-Sat: 10 AM-8 PM; Sun: 10 AM-1:30 PM");
+    expect(content.hi.contact.hours).toBe("सोम–शनि: सुबह 10–रात 8; रविवार: सुबह 10–दोपहर 1:30");
+    expect(content.en.hero.badgeTitle).toBe("Mon-Sat: 10 AM-8 PM");
+    expect(content.hi.hero.badgeTitle).toBe("सोम–शनि: सुबह 10–रात 8");
+    expect(content.en.hero.badgeSub).toBe("Sun: 10 AM-1:30 PM");
+    expect(content.hi.hero.badgeSub).toBe("रविवार: सुबह 10–दोपहर 1:30");
+    for (const lang of ["en", "hi"]) {
+      const translated = content[lang];
+      expect(translated.hero.stats[2].value).toBe("7");
+      expect(translated.pages.doctor.faqs[1].a).toBe(translated.contact.hours);
+      expect(translated.pages.implants.faqs[3].a).toContain(translated.contact.hours);
+      expect(translated.pages.rct.faqs[3].a).toContain(translated.contact.hours);
+    }
+  });
+
+  it("article pages quote reviews that exist in that language", () => {
+    for (const lang of ["en", "hi"]) {
+      const names = new Set(content[lang].reviews.items.map((review) => review.name));
+      for (const [id, page] of Object.entries(content[lang].pages)) {
+        expect(page.faqs, id).toHaveLength(4);
+        for (const name of page.reviewNames) expect(names, `${lang} ${name}`).toContain(name);
+      }
+    }
+  });
+
   it("Hindi copy actually contains Devanagari text", () => {
     expect(content.hi.hero.title).toMatch(/[\u0900-\u097F]/);
     expect(content.hi.services.items.every((s) => /[\u0900-\u097F]/.test(s.title))).toBe(true);

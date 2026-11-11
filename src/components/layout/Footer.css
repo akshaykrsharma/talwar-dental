@@ -11,6 +11,19 @@
 .footer p {
   color: #b9c6d2;
 }
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+}
+.footer__links a {
+  color: #fff;
+  font-weight: 600;
+  text-underline-offset: 4px;
+}
+.footer__links a:hover {
+  color: #8fd0ea;
+}
 .footer__small {
   font-size: 0.85rem;
   color: #7f93a5 !important;

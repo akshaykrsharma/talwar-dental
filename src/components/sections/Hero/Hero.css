@@ -9,6 +9,17 @@
   gap: clamp(32px, 5vw, 72px);
   align-items: center;
 }
+.hero__subtitle {
+  margin-top: 12px;
+  font-size: clamp(1.15rem, 2vw, 1.45rem);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+}
+:lang(hi) .hero__subtitle {
+  letter-spacing: 0;
+  line-height: 1.45;
+}
 .hero__copy .lead {
   margin-top: 22px;
 }
