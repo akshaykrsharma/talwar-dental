@@ -15,6 +15,7 @@ const en = {
     clinic: "Clinic",
     reviews: "Reviews",
     contact: "Contact",
+    play: "Let's Play",
     call: "Call now",
     book: "Book appointment",
     menu: "Menu",
@@ -137,6 +138,7 @@ const en = {
       },
       {
         id: "smile",
+        pageId: "crowns",
         title: "Smile makeover & crowns",
         text: "Zirconia crowns and cosmetic correction that look natural and last.",
       },
@@ -148,11 +150,13 @@ const en = {
       },
       {
         id: "surgery",
+        pageId: "surgery",
         title: "Oral & maxillofacial surgery",
         text: "Wisdom tooth removal and jaw surgery, handled by a trained oral surgeon.",
       },
       {
         id: "gums",
+        pageId: "gums",
         title: "Gum care",
         text: "Treatment for bleeding gums, including periodontal flap surgery.",
       },
@@ -175,6 +179,7 @@ const en = {
       },
       {
         id: "exam",
+        pageId: "cleaning",
         title: "Exams & cleanings",
         text: "Preventive care to maintain healthy teeth and gums.",
       },
@@ -459,6 +464,10 @@ const en = {
       related: [
         { pageId: "implants", label: "Dental implants in Mansarovar" },
         { pageId: "rct", label: "Root canal treatment in Mansarovar" },
+        { pageId: "crowns", label: "Dental crowns in Mansarovar" },
+        { pageId: "surgery", label: "Oral surgery in Mansarovar" },
+        { pageId: "gums", label: "Gum treatment in Mansarovar" },
+        { pageId: "cleaning", label: "Teeth cleaning in Mansarovar" },
       ],
     },
     implants: {
@@ -572,7 +581,235 @@ const en = {
       relatedTitle: "Related pages",
       related: [
         { pageId: "doctor", label: "Dr. Anish Talwar" },
+        { pageId: "crowns", label: "Dental crowns in Mansarovar" },
+      ],
+    },
+    crowns: {
+      nav: "Dental crowns",
+      seo: {
+        title: "Dental Crowns in Mansarovar, Jaipur | Talwar Dental Care",
+        description:
+          "Zirconia crowns at Talwar Dental Care, 79/14 Shipra Path, Mansarovar, Jaipur. Dr. Anish Talwar explains the plan before treatment. Call 098290 76830.",
+      },
+      kicker: "Mansarovar, Jaipur",
+      title: "Dental crowns in Mansarovar, Jaipur",
+      lead: "Talwar Dental Care provides zirconia crowns at 79/14 Shipra Path, Mansarovar. Dr. Anish Talwar explains the plan, from the procedure through aftercare, before treatment starts.",
+      reviewed: "Reviewed by Dr. Anish Talwar, BDS, MDS (Oral & Maxillofacial Surgery).",
+      sections: [
+        {
+          heading: "When a crown is considered",
+          text: "A crown covers a tooth that is worn, broken, or restored after a root canal. The visit starts with an examination, so the doctor can say whether a crown is the right option for that tooth.",
+        },
+        {
+          heading: "What patients report",
+          text: "Patients who received zirconia crowns often say the teeth look natural. The result depends on the tooth and the plan. Dr. Talwar explains what to expect before treatment.",
+        },
+      ],
+      pointsTitle: "What the visit includes",
+      points: [
+        "An examination before a crown is planned",
+        "Zirconia crowns for a natural look",
+        "The procedure and aftercare explained in advance",
+        "A crown planned with other care, such as a root canal, when the tooth needs both",
+      ],
+      faqsTitle: "Common questions",
+      faqs: [
+        {
+          q: "What kind of crowns do you provide?",
+          a: "Zirconia crowns, planned after an examination of the tooth.",
+        },
+        {
+          q: "Will a crown look like my own tooth?",
+          a: "Patients often say zirconia crowns look natural. The result depends on the tooth, and the doctor explains that before treatment.",
+        },
+        {
+          q: "Who does the treatment?",
+          a: "Dr. Anish Talwar and the clinical team at Talwar Dental Care.",
+        },
+        {
+          q: "How do I book?",
+          a: `Call 098290 76830 or use the WhatsApp form. ${clinicHours}. Visit 79/14 Shipra Path, Mansarovar.`,
+        },
+      ],
+      reviewsTitle: "What patients say about crowns",
+      reviewNames: ["Snigdha Sisodia", "Anamika Chandra", "Dr. M. Kuruvilla"],
+      book: "Book a crown consultation",
+      visitTitle: "Visit the clinic",
+      relatedTitle: "Related pages",
+      related: [
+        { pageId: "doctor", label: "Dr. Anish Talwar" },
+        { pageId: "rct", label: "Root canal treatment in Mansarovar" },
+      ],
+    },
+    surgery: {
+      nav: "Oral surgery",
+      seo: {
+        title: "Oral Surgery in Mansarovar, Jaipur | Talwar Dental Care",
+        description:
+          "Wisdom tooth removal and oral surgery at Talwar Dental Care, Shipra Path, Mansarovar. Dr. Anish Talwar, MDS Oral & Maxillofacial Surgery. Call 098290 76830.",
+      },
+      kicker: "Mansarovar, Jaipur",
+      title: "Oral surgery in Mansarovar, Jaipur",
+      lead: "Dr. Anish Talwar, MDS in Oral & Maxillofacial Surgery, provides wisdom-tooth removal and other oral surgery at Talwar Dental Care, 79/14 Shipra Path, Mansarovar.",
+      reviewed: "Reviewed by Dr. Anish Talwar, BDS, MDS (Oral & Maxillofacial Surgery).",
+      sections: [
+        {
+          heading: "What this visit covers",
+          text: "Wisdom tooth removal and other oral surgery, including jaw surgery when that is the right plan. The visit starts with an examination and an X-ray taken in the clinic.",
+        },
+        {
+          heading: "Who treats you",
+          text: "Dr. Talwar holds an MDS in Oral & Maxillofacial Surgery and is a member of the Association of Oral and Maxillofacial Surgeons of India. He explains the plan, and what recovery involves, before treatment starts.",
+        },
+      ],
+      pointsTitle: "What the visit includes",
+      points: [
+        "Examination and an in-house digital X-ray",
+        "Wisdom tooth removal",
+        "Other oral surgery, including jaw surgery when it is indicated",
+        "The plan and aftercare explained before you leave",
+      ],
+      faqsTitle: "Common questions",
+      faqs: [
+        {
+          q: "Who does the surgery?",
+          a: "Dr. Anish Talwar, who holds an MDS in Oral & Maxillofacial Surgery.",
+        },
+        {
+          q: "Do you remove wisdom teeth?",
+          a: "Yes. Wisdom tooth removal is planned after an examination and an X-ray.",
+        },
+        {
+          q: "Is surgery needed in every case?",
+          a: "No. The examination decides whether surgery is the right plan.",
+        },
+        {
+          q: "Where is the clinic, and when is it open?",
+          a: `79/14, Shipra Path, Sector 7, Mansarovar, Jaipur 302020. ${clinicHours}. Call 098290 76830.`,
+        },
+      ],
+      reviewsTitle: "What patients say about oral surgery",
+      reviewNames: ["Anubhav Parashar", "Kush Mathur"],
+      book: "Book a surgery consultation",
+      visitTitle: "Visit the clinic",
+      relatedTitle: "Related pages",
+      related: [
+        { pageId: "doctor", label: "Dr. Anish Talwar" },
         { pageId: "implants", label: "Dental implants in Mansarovar" },
+      ],
+    },
+    gums: {
+      nav: "Gum care",
+      seo: {
+        title: "Gum Treatment in Mansarovar, Jaipur | Talwar Dental Care",
+        description:
+          "Care for bleeding gums, including periodontal flap surgery, at Talwar Dental Care, Shipra Path, Mansarovar. Call 098290 76830.",
+      },
+      kicker: "Mansarovar, Jaipur",
+      title: "Gum treatment in Mansarovar, Jaipur",
+      lead: "Talwar Dental Care treats bleeding gums at 79/14 Shipra Path, Mansarovar, including periodontal flap surgery when that is the right plan. The visit starts with an examination.",
+      reviewed: "Reviewed by Dr. Anish Talwar, BDS, MDS (Oral & Maxillofacial Surgery).",
+      sections: [
+        {
+          heading: "When gum treatment is considered",
+          text: "Bleeding gums need an examination before a plan is made. Some visits stay with cleaning and home care. Some need periodontal flap surgery. Dr. Talwar explains which applies to you.",
+        },
+        {
+          heading: "How a visit is planned",
+          text: "When the examination needs it, a digital X-ray is taken in the clinic. You hear the options before treatment starts.",
+        },
+      ],
+      pointsTitle: "What the visit includes",
+      points: [
+        "An examination of the gums",
+        "A plan explained before treatment",
+        "Care for bleeding gums",
+        "Periodontal flap surgery when it is clinically suitable",
+      ],
+      faqsTitle: "Common questions",
+      faqs: [
+        {
+          q: "Do you treat bleeding gums?",
+          a: "Yes. Treatment is planned after an examination.",
+        },
+        {
+          q: "Does every case need flap surgery?",
+          a: "No. Periodontal flap surgery is one option for gum disease. Many visits do not need it.",
+        },
+        {
+          q: "Who does the treatment?",
+          a: "Dr. Anish Talwar and the clinical team at Talwar Dental Care.",
+        },
+        {
+          q: "How do I book?",
+          a: `Call 098290 76830 or use the WhatsApp form. ${clinicHours}. Visit 79/14 Shipra Path, Mansarovar.`,
+        },
+      ],
+      reviewsTitle: "What patients say",
+      reviewNames: ["Sumat Kumar", "Smita Dubey", "Priyanka Chaurasiya"],
+      book: "Book a gum consultation",
+      visitTitle: "Visit the clinic",
+      relatedTitle: "Related pages",
+      related: [
+        { pageId: "doctor", label: "Dr. Anish Talwar" },
+        { pageId: "cleaning", label: "Teeth cleaning in Mansarovar" },
+      ],
+    },
+    cleaning: {
+      nav: "Teeth cleaning",
+      seo: {
+        title: "Teeth Cleaning in Mansarovar, Jaipur | Talwar Dental Care",
+        description:
+          "Dental exams and teeth cleaning at Talwar Dental Care, 79/14 Shipra Path, Mansarovar, Jaipur. Call 098290 76830.",
+      },
+      kicker: "Mansarovar, Jaipur",
+      title: "Teeth cleaning in Mansarovar, Jaipur",
+      lead: "Talwar Dental Care provides dental exams and teeth cleaning at 79/14 Shipra Path, Mansarovar. The visit checks teeth and gums before a problem grows.",
+      reviewed: "Reviewed by Dr. Anish Talwar, BDS, MDS (Oral & Maxillofacial Surgery).",
+      sections: [
+        {
+          heading: "What a cleaning visit includes",
+          text: "An examination and cleaning to maintain healthy teeth and gums. Patients also come for scaling and polishing. The doctor explains what your teeth need after looking at them.",
+        },
+        {
+          heading: "What patients report",
+          text: "Patients who came for scaling say the cleaning was done gently and that stains were addressed. What a visit includes depends on the examination.",
+        },
+      ],
+      pointsTitle: "What the visit includes",
+      points: [
+        "A dental examination",
+        "Cleaning to maintain teeth and gums",
+        "Scaling and polishing when that is what the teeth need",
+        "Advice before you leave",
+      ],
+      faqsTitle: "Common questions",
+      faqs: [
+        {
+          q: "Do you offer teeth cleaning?",
+          a: "Yes. Exams and cleanings are part of the care at this clinic.",
+        },
+        {
+          q: "Is scaling the same as a routine cleaning?",
+          a: "Scaling is a deeper clean. The examination decides what your teeth need.",
+        },
+        {
+          q: "Who does the visit?",
+          a: "Dr. Anish Talwar and the clinical team at Talwar Dental Care.",
+        },
+        {
+          q: "How do I book?",
+          a: `Call 098290 76830 or use the WhatsApp form. ${clinicHours}. Visit 79/14 Shipra Path, Mansarovar.`,
+        },
+      ],
+      reviewsTitle: "What patients say about cleaning",
+      reviewNames: ["Nagendra Singh", "Arun Agrawal"],
+      book: "Book a cleaning",
+      visitTitle: "Visit the clinic",
+      relatedTitle: "Related pages",
+      related: [
+        { pageId: "doctor", label: "Dr. Anish Talwar" },
+        { pageId: "gums", label: "Gum treatment in Mansarovar" },
       ],
     },
   },
@@ -580,6 +817,37 @@ const en = {
     title: "Dentist in Mansarovar, Jaipur | Talwar Dental Care",
     description:
       "Dr. Anish Talwar, MDS Oral & Maxillofacial Surgery, at Talwar Dental Care, 79/14 Shipra Path, Mansarovar, Jaipur. Implants and root canal treatment. Call 098290 76830.",
+  },
+  play: {
+    title: "Let's play",
+    text: "A short game from the clinic. Keep the tooth away from the sweets.",
+  },
+  notFound: {
+    seo: {
+      title: "Page not found | Talwar Dental Care",
+      description:
+        "This page does not exist. Visit Talwar Dental Care in Mansarovar, Jaipur, or call 098290 76830.",
+    },
+    title: "This page doesn't exist",
+    text: "The link may be incorrect, or the page may have moved. Let's get you back to healthy smiles.",
+    home: "Back to home page",
+    call: "Call 098290 76830",
+    also: "Or jump straight to:",
+    treatments: "Treatments",
+    reviews: "Patient reviews",
+    book: "Book an appointment",
+    gameTitle: "Keep the tooth away from the sweets",
+    hint: "Press space, or tap the game, to jump.",
+    level: "Level",
+    lives: "Lives",
+    score: "Score",
+    best: "Best",
+    play: "Play",
+    again: "Play again",
+    over: "A sweet caught the tooth",
+    challenge: "Challenge a friend",
+    challengeText: "I scored {score} at Talwar Dental Care. Can you beat it? Let's play.",
+    challengeSaved: "Score card saved. Share the picture with the link.",
   },
   error: {
     title: "Something went wrong",

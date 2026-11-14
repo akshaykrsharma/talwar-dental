@@ -87,6 +87,26 @@ export const PAGES = [
     en: "/root-canal-treatment-mansarovar/",
     hi: "/hi/root-canal-treatment-mansarovar/",
   },
+  {
+    id: "crowns",
+    en: "/dental-crowns-mansarovar-jaipur/",
+    hi: "/hi/dental-crowns-mansarovar-jaipur/",
+  },
+  {
+    id: "surgery",
+    en: "/oral-surgery-mansarovar-jaipur/",
+    hi: "/hi/oral-surgery-mansarovar-jaipur/",
+  },
+  {
+    id: "gums",
+    en: "/gum-treatment-mansarovar-jaipur/",
+    hi: "/hi/gum-treatment-mansarovar-jaipur/",
+  },
+  {
+    id: "cleaning",
+    en: "/teeth-cleaning-mansarovar-jaipur/",
+    hi: "/hi/teeth-cleaning-mansarovar-jaipur/",
+  },
 ];
 
 /** DOM ids of the page sections. Used for ids, anchors and scrolling so they can never drift apart. */
@@ -97,6 +117,7 @@ export const SECTION_IDS = {
   oneRoof: "oneroof",
   reviews: "reviews",
   contact: "contact",
+  play: "play",
 };
 
 /**
@@ -105,8 +126,8 @@ export const SECTION_IDS = {
  */
 export const NAV_LINKS = [
   { key: "about", pageId: "doctor" },
-  { key: "implants", pageId: "implants" },
   { key: "rct", pageId: "rct" },
   { key: "reviews", sectionId: SECTION_IDS.reviews },
   { key: "contact", sectionId: SECTION_IDS.contact },
+  { key: "play", sectionId: SECTION_IDS.play },
 ];

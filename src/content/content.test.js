@@ -46,6 +46,9 @@ describe("translations", () => {
       expect(translated.pages.doctor.faqs[1].a).toBe(translated.contact.hours);
       expect(translated.pages.implants.faqs[3].a).toContain(translated.contact.hours);
       expect(translated.pages.rct.faqs[3].a).toContain(translated.contact.hours);
+      for (const id of ["crowns", "surgery", "gums", "cleaning"]) {
+        expect(translated.pages[id].faqs[3].a).toContain(translated.contact.hours);
+      }
     }
   });
 

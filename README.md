@@ -93,18 +93,20 @@ Keep them in step. A rule added to one is not picked up by the other.
 Wrangler treats the repo as an unconfigured Vite app and tries to parse `vite.config.js` with a
 parser that rejects `import.meta`. That is the `Error parsing file: vite.config.js` failure.
 
-In the Cloudflare dashboard, connect this repository and set:
+Merging into `master` runs `.github/workflows/ci.yml`. After lint, formatting and tests pass,
+the workflow builds with `VITE_SITE_URL=https://talwardentalcare.com` and runs `wrangler deploy`.
+Pull requests run the checks and do not publish.
 
-| Setting           | Value                                            |
-| ----------------- | ------------------------------------------------ |
-| Production branch | `master`                                         |
-| Build command     | `npm run build`                                  |
-| Deploy command    | `npx wrangler deploy`                            |
-| Environment var   | `VITE_SITE_URL` = `https://talwardentalcare.com` |
+One repository secret is required (**Settings → Secrets and variables → Actions**):
 
-The Worker name in the dashboard must match `name` in `wrangler.json` (`talwar-dental`). Every
-push to `master` then builds and publishes. `_headers` and `_redirects` in `dist/` are applied
-on upload; `public/.assetsignore` keeps the Vite manifest out of the upload.
+| Secret                 | Value                                                                                         |
+| ---------------------- | --------------------------------------------------------------------------------------------- |
+| `CLOUDFLARE_API_TOKEN` | An API token with the **Workers Scripts: Edit** permission for the account in `wrangler.json` |
+
+Create the token at [Cloudflare API tokens](https://dash.cloudflare.com/profile/api-tokens) using
+the **Edit Cloudflare Workers** template. The Worker name must match `name` in `wrangler.json`
+(`talwar-dental`). `_headers` and `_redirects` in `dist/` are applied on upload;
+`public/.assetsignore` keeps the Vite manifest out of the upload.
 
 The site goes live on `<worker>.workers.dev` straight away, which is worth using to check
 everything before any DNS change. To put it on the real domain, add it under **Custom domains**.
@@ -116,7 +118,7 @@ Cloudflare issues the certificate and serves HTTPS automatically. Redirecting `w
 domain is not done in `_redirects`, which matches on paths only — add both hostnames as custom
 domains and create a **Redirect Rule** for `www`, under **Rules → Redirect Rules**.
 
-To publish from your own machine instead, without the Git integration:
+To publish from your own machine instead of waiting for the workflow:
 
 ```bash
 npm run deploy:cloudflare
@@ -127,12 +129,9 @@ browser to authorise.
 
 ### Hostinger
 
-Pushing to `master` releases the site. `.github/workflows/ci.yml` runs lint, formatting and
-tests, builds with the real `VITE_SITE_URL`, and uploads `dist/` to `public_html` over FTPS.
-It only uploads files that changed, and it never deploys when the checks fail.
-
-Three repository secrets are required (**Settings → Secrets and variables → Actions**). Take the
-values from hPanel → **Files → FTP Accounts**:
+The GitHub workflow publishes to Cloudflare, not to this host. To upload `dist/` to Hostinger
+from your own machine, use the script below. Three values come from hPanel → **Files → FTP
+Accounts**:
 
 | Secret         | Value                                                |
 | -------------- | ---------------------------------------------------- |
@@ -140,18 +139,15 @@ values from hPanel → **Files → FTP Accounts**:
 | `FTP_USERNAME` | FTP username, e.g. `u123456789.talwardentalcare.com` |
 | `FTP_PASSWORD` | that FTP account's password                          |
 
-You can also start a release by hand from the **Actions** tab (**Run workflow**), which offers a
-**Delete everything in public_html before uploading** checkbox.
-
 #### First release only: clearing the old WordPress site
 
-The domain previously served a placeholder WordPress install. Before the first deploy:
+The domain previously served a placeholder WordPress install. Before the first upload from your
+machine:
 
 1. hPanel → **Websites → Dashboard → Files → Backups**, take a files and database backup so the
    old install can be restored.
-2. Run the workflow from the **Actions** tab with the **wipe public_html** box ticked. That
-   empties the directory and uploads the new site in one go. Later pushes upload only what
-   changed, so leave the box unticked from then on.
+2. Run `python3 scripts/deploy-hostinger.py --apply --wipe`. That empties `public_html` and
+   uploads the new site. Later uploads should omit `--wipe`.
 3. Drop the orphaned WordPress database in hPanel → **Databases → Management**.
 4. Purge the server cache in hPanel → **Advanced → Cache Manager**, or old pages keep being
    served from LiteSpeed.

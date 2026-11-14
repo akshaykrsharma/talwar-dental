@@ -31,6 +31,11 @@
 .oneroof__list small {
   display: block;
 }
+.oneroof__list a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
 .oneroof__list small {
   margin-top: 4px;
   font-size: 0.9rem;

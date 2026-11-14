@@ -24,7 +24,7 @@ export function languageFromLocation(pathname) {
 }
 
 /**
- * Which page a URL is. Unknown paths are treated as the homepage.
+ * Which page a URL is. Unknown paths are a not-found page.
  * @param {string} pathname
  * @returns {string}
  */
@@ -34,7 +34,7 @@ export function pageFromLocation(pathname) {
   else if (path.startsWith("/hi/")) path = path.slice(3) || "/";
   if (path === "" || path === "/") return "home";
   const withSlash = path.endsWith("/") ? path : `${path}/`;
-  return PAGES.find((page) => page.en === withSlash)?.id ?? "home";
+  return PAGES.find((page) => page.en === withSlash)?.id ?? "notFound";
 }
 
 /**

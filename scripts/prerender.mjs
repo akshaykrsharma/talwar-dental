@@ -15,7 +15,9 @@ const escapeHtml = (value) =>
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;");
+    .replace(/"/g, "&quot;")
+    // React escapes apostrophes too; match it so heading checks line up.
+    .replace(/'/g, "&#x27;");
 
 function replaceTag(html, pattern, replacement, label) {
   if (!pattern.test(html)) throw new Error(`prerender: could not find ${label}`);
@@ -167,6 +169,32 @@ try {
       writeFileSync(file, html);
     }
   }
+
+  const missing = content.en.notFound;
+  let notFoundHtml = pageHtml({
+    template,
+    body: render("en", "notFound"),
+    lang: "en",
+    path: "/404.html",
+    alternate: { en: "/", hi: "/hi/" },
+    seo: missing.seo,
+    schema: buildPageSchema({
+      clinic: CLINIC,
+      siteUrl,
+      description: missing.seo.description,
+      pagePath: "/",
+    }),
+    entries,
+  });
+  notFoundHtml = setMeta(notFoundHtml, "name", "robots", "noindex, follow");
+  notFoundHtml = notFoundHtml.replace(/\s*<link rel="(?:canonical|alternate)"[^>]*>/g, "");
+  if (
+    !notFoundHtml.includes(escapeHtml(missing.title)) ||
+    notFoundHtml.includes('rel="canonical"')
+  ) {
+    throw new Error("prerender: 404.html is missing its heading or still has a canonical link");
+  }
+  writeFileSync(join(dist, "404.html"), notFoundHtml);
 
   const sitemap = sitemapXml(PAGES);
   writeFileSync(join(dist, "sitemap.xml"), sitemap);

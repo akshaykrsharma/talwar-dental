@@ -46,6 +46,9 @@ export function buildDentistSchema({ clinic, siteUrl, description }) {
       { "@type": "MedicalProcedure", name: "Dental implant" },
       { "@type": "MedicalProcedure", name: "Root canal treatment" },
       { "@type": "MedicalProcedure", name: "Oral and maxillofacial surgery" },
+      { "@type": "MedicalProcedure", name: "Dental crown" },
+      { "@type": "MedicalProcedure", name: "Gum treatment" },
+      { "@type": "MedicalProcedure", name: "Teeth cleaning" },
     ],
     employee: {
       "@type": "Person",

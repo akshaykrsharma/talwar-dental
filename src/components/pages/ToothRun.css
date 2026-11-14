@@ -1,0 +1,143 @@
+.run {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 24px 50px -32px rgba(22, 33, 44, 0.45);
+  overflow: hidden;
+}
+.run__bar {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 16px;
+  align-items: center;
+  padding: 10px 16px 0;
+}
+.run__title {
+  margin: 0;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+.run__scores {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px 14px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+}
+.run__scores strong {
+  color: var(--ink);
+}
+.run__lives {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.run__heart {
+  width: 22px;
+  height: 22px;
+  fill: #e23d4a;
+}
+.run__heart.is-spent {
+  fill: transparent;
+  stroke: #e7b4b8;
+  stroke-width: 1.6px;
+}
+.run__stage {
+  position: relative;
+  margin: 8px 8px 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--cream);
+}
+.run__canvas {
+  display: block;
+  width: 100%;
+  height: 200px;
+  touch-action: none;
+  cursor: pointer;
+}
+.run__overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  background: color-mix(in srgb, var(--cream) 55%, transparent);
+  text-align: center;
+  padding: 16px;
+}
+.run__overlay p {
+  margin: 0;
+  font-weight: 700;
+}
+.run__overlay .btn {
+  min-width: 180px;
+}
+.run__over {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 16px 16px 18px;
+  text-align: center;
+}
+.run__over p {
+  margin: 0;
+  font-weight: 700;
+}
+.run__final {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--navy);
+}
+.run__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: min(520px, 100%);
+  margin-top: 6px;
+}
+.run__actions .btn {
+  flex: 0 0 auto;
+  min-width: 200px;
+}
+.run__share {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 4px 16px 8px;
+}
+.run__card {
+  width: min(280px, 100%);
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+.run__share-note {
+  max-width: 28ch;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+.run__hint {
+  margin: 0;
+  padding: 6px 16px 12px;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 620px) {
+  .run__actions {
+    flex-direction: column;
+  }
+  .run__actions .btn {
+    width: 100%;
+    min-width: 0;
+  }
+}

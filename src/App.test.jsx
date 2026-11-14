@@ -47,10 +47,6 @@ describe("<App />", () => {
       "href",
       `${root}/dr-anish-talwar/`,
     );
-    expect(nav.getByRole("link", { name: content[lang].nav.implants })).toHaveAttribute(
-      "href",
-      `${root}/dental-implants-mansarovar-jaipur/`,
-    );
     expect(nav.getByRole("link", { name: content[lang].nav.rct })).toHaveAttribute(
       "href",
       `${root}/root-canal-treatment-mansarovar/`,
@@ -65,8 +61,12 @@ describe("<App />", () => {
       "href",
       `${sectionPrefix}#contact`,
     );
+    expect(nav.getByRole("link", { name: content[lang].nav.play })).toHaveAttribute(
+      "href",
+      `${sectionPrefix}#play`,
+    );
     if (onHome) {
-      for (const id of ["about", "services", "oneroof", "reviews", "contact"]) {
+      for (const id of ["about", "services", "oneroof", "reviews", "contact", "play"]) {
         expect(document.getElementById(id)).toBeInTheDocument();
       }
       expect(screen.getByRole("link", { name: content[lang].doctor.profile })).toHaveAttribute(
@@ -103,6 +103,16 @@ describe("<App />", () => {
       content.en.pages.rct.title,
       content.en.pages.rct.seo.title,
     ],
+    [
+      "/dental-crowns-mansarovar-jaipur/",
+      content.en.pages.crowns.title,
+      content.en.pages.crowns.seo.title,
+    ],
+    [
+      "/teeth-cleaning-mansarovar-jaipur/",
+      content.en.pages.cleaning.title,
+      content.en.pages.cleaning.seo.title,
+    ],
   ])("keeps %s in English even after a Hindi visit", (path, heading, title) => {
     window.localStorage.setItem("talwar-lang", "hi");
     window.history.pushState(null, "", path);
@@ -111,6 +121,29 @@ describe("<App />", () => {
     expect(document.title).toBe(title);
     expect(document.documentElement.lang).toBe("en");
     expect(window.localStorage.getItem("talwar-lang")).toBe("en");
+  });
+
+  it("shows a not-found page for an unknown address", () => {
+    window.history.pushState(null, "", "/not-a-real-page");
+    renderApp();
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(content.en.notFound.title);
+    expect(screen.queryByRole("heading", { name: content.en.hero.title })).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: content.en.notFound.home })).toHaveAttribute(
+      "href",
+      "/",
+    );
+    expect(document.title).toBe(content.en.notFound.seo.title);
+  });
+
+  it("shows the Hindi not-found page for a wrong Hindi address", () => {
+    window.history.pushState(null, "", "/hi/not-a-real-page/");
+    renderApp();
+    expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent(content.hi.notFound.title);
+    expect(document.documentElement.lang).toBe("hi");
+    expect(screen.getByRole("link", { name: content.hi.notFound.home })).toHaveAttribute(
+      "href",
+      "/hi/",
+    );
   });
 
   it("renders a treatment page from its URL and offers the Hindi version", () => {

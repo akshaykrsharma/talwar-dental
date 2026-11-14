@@ -5,11 +5,6 @@ on:
     branches: [master]
   pull_request:
   workflow_dispatch:
-    inputs:
-      wipe_public_html:
-        description: "Delete everything in public_html before uploading. Needed once, to clear the old WordPress site."
-        type: boolean
-        default: false
 
 concurrency:
   group: ci-${{ github.ref }}
@@ -33,12 +28,14 @@ jobs:
           VITE_SITE_URL: https://www.example.com
 
   deploy:
-    # Only the real branch ships, and only once the checks above are green.
+    # A merge to master is a push. Pull requests only run the checks above.
     needs: check
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     concurrency:
-      group: deploy-hostinger
+      group: deploy-cloudflare
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v4
@@ -54,19 +51,9 @@ jobs:
       # The build manifest is only needed by the prerender step, not by visitors.
       - run: rm -rf dist/.vite dist/.DS_Store
 
-      - name: Upload dist/ to Hostinger
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Publish to Cloudflare
+        uses: cloudflare/wrangler-action@v3
         with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          # Hostinger supports explicit FTP over TLS. If the connection is
-          # refused, change this to `ftp` (unencrypted, port 21).
-          protocol: ftps
-          port: 21
-          local-dir: ./dist/
-          server-dir: public_html/
-          # Normally a sync state file on the server keeps uploads incremental.
-          # Running the workflow by hand with wipe_public_html empties the
-          # directory first, which is how the old WordPress site is cleared.
-          dangerous-clean-slate: ${{ inputs.wipe_public_html == true }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          wranglerVersion: "4"
+          command: deploy

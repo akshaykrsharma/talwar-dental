@@ -190,7 +190,8 @@ export default function ArticlePage({ pageId, service, onServiceChange }) {
 }
 
 ArticlePage.propTypes = {
-  pageId: PropTypes.oneOf(["doctor", "implants", "rct"]).isRequired,
+  pageId: PropTypes.oneOf(["doctor", "implants", "rct", "crowns", "surgery", "gums", "cleaning"])
+    .isRequired,
   service: PropTypes.string.isRequired,
   onServiceChange: PropTypes.func.isRequired,
 };

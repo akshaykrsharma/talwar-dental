@@ -1,13 +1,14 @@
 import { SECTION_IDS } from "@/config/site";
 import { clinicPhotos } from "@/assets/images";
 import { useLanguage } from "@/hooks/useLanguage";
+import { languageHref } from "@/utils/languagePath";
 import Container from "@/components/ui/Container";
 import IconTile from "@/components/ui/IconTile";
 import Section from "@/components/ui/Section";
 import "./OneRoof.css";
 
 export default function OneRoof() {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
   const r = t.oneRoof;
 
   return (
@@ -30,7 +31,13 @@ export default function OneRoof() {
               <li key={item.id}>
                 <IconTile name={item.id} size="sm" />
                 <span>
-                  <strong>{item.title}</strong>
+                  <strong>
+                    {item.pageId ? (
+                      <a href={languageHref(lang, item.pageId)}>{item.title}</a>
+                    ) : (
+                      item.title
+                    )}
+                  </strong>
                   <small>{item.text}</small>
                 </span>
               </li>

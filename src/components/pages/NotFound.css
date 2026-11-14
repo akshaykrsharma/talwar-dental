@@ -1,0 +1,124 @@
+.not-found {
+  padding: 4px 0 40px;
+  text-align: center;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 255, 255, 0.92) 0, rgba(255, 255, 255, 0) 46%),
+    var(--cream);
+}
+.not-found__hero {
+  width: min(640px, 100% - 48px);
+  margin-inline: auto;
+}
+.not-found__code {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(4px, 1.5vw, 14px);
+  margin: 0;
+  font-size: clamp(60px, 11vw, 120px);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--navy);
+  user-select: none;
+}
+.not-found__code svg {
+  height: 0.72em;
+  width: auto;
+  margin-top: 0.04em;
+}
+.not-found h1 {
+  max-width: none;
+  margin: 8px 0 8px;
+  font-size: clamp(1.6rem, 4.2vw, 2.4rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+.not-found:lang(hi) h1,
+.not-found h1:lang(hi) {
+  letter-spacing: 0;
+  line-height: 1.4;
+}
+.not-found .lead {
+  margin: 0 auto;
+  max-width: 46ch;
+  color: var(--ink-soft);
+  font-size: 1rem;
+  line-height: 1.45;
+}
+.not-found__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 28px;
+}
+.not-found__links {
+  width: min(640px, 100% - 48px);
+  margin: 28px auto 0;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+}
+.not-found__links ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px 24px;
+  margin: 10px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.not-found__links a {
+  color: var(--accent);
+  font-weight: 600;
+  text-underline-offset: 4px;
+}
+.not-found__game {
+  width: min(840px, 100% - 48px);
+  margin: 32px auto 0;
+  text-align: start;
+}
+
+@media (max-width: 860px) {
+  .not-found {
+    padding-bottom: 120px;
+  }
+  .not-found__hero,
+  .not-found__links,
+  .not-found__game {
+    width: min(840px, 100% - 32px);
+  }
+}
+@media (max-width: 620px) {
+  .not-found__actions {
+    flex-direction: column;
+  }
+  .not-found__actions .btn {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .not-found__hero > * {
+    animation: not-found-rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  .not-found__hero > :nth-child(2) {
+    animation-delay: 0.08s;
+  }
+  .not-found__hero > :nth-child(3) {
+    animation-delay: 0.16s;
+  }
+  .not-found__hero > :nth-child(4) {
+    animation-delay: 0.24s;
+  }
+  .not-found__hero > :nth-child(5) {
+    animation-delay: 0.32s;
+  }
+  @keyframes not-found-rise {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+  }
+}

@@ -9,10 +9,12 @@ import Header from "@/components/layout/Header";
 import QuickBar from "@/components/layout/QuickBar";
 import SkipLink from "@/components/layout/SkipLink";
 import ArticlePage from "@/components/pages/ArticlePage";
+import NotFound from "@/components/pages/NotFound";
 import Contact from "@/components/sections/Contact/Contact";
 import Doctor from "@/components/sections/Doctor/Doctor";
 import Hero from "@/components/sections/Hero/Hero";
 import OneRoof from "@/components/sections/OneRoof/OneRoof";
+import Play from "@/components/sections/Play/Play";
 import Reviews from "@/components/sections/Reviews/Reviews";
 import Services from "@/components/sections/Services/Services";
 import Welcome from "@/components/sections/Welcome/Welcome";
@@ -45,7 +47,9 @@ export default function App({ initialPageId }) {
       <SkipLink />
       <Header pageId={pageId} />
       <main id="main">
-        {pageId === "home" ? (
+        {pageId === "notFound" ? (
+          <NotFound />
+        ) : pageId === "home" ? (
           <>
             <Hero />
             <Welcome />
@@ -54,6 +58,7 @@ export default function App({ initialPageId }) {
             <OneRoof />
             <Reviews />
             <Contact service={service} onServiceChange={setService} />
+            <Play />
           </>
         ) : (
           <ArticlePage pageId={pageId} service={service} onServiceChange={setService} />

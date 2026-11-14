@@ -18,6 +18,8 @@ describe("language paths", () => {
     expect(languageHref("en")).toBe("/");
     expect(languageHref("hi", "implants")).toBe("/hi/dental-implants-mansarovar-jaipur/");
     expect(languageHref("en", "rct")).toBe("/root-canal-treatment-mansarovar/");
+    expect(languageHref("hi", "crowns")).toBe("/hi/dental-crowns-mansarovar-jaipur/");
+    expect(languageHref("en", "cleaning")).toBe("/teeth-cleaning-mansarovar-jaipur/");
   });
 
   it("reads the page id from English and Hindi paths", () => {
@@ -27,7 +29,10 @@ describe("language paths", () => {
     expect(pageFromLocation("/hi/dr-anish-talwar/index.html")).toBe("doctor");
     expect(pageFromLocation("/dental-implants-mansarovar-jaipur")).toBe("implants");
     expect(pageFromLocation("/hi/root-canal-treatment-mansarovar/")).toBe("rct");
-    expect(pageFromLocation("/unknown")).toBe("home");
+    expect(pageFromLocation("/oral-surgery-mansarovar-jaipur/")).toBe("surgery");
+    expect(pageFromLocation("/hi/gum-treatment-mansarovar-jaipur/")).toBe("gums");
+    expect(pageFromLocation("/unknown")).toBe("notFound");
+    expect(pageFromLocation("/hi/not-a-real-page/")).toBe("notFound");
   });
 
   it("keeps section links on the homepage and points other pages back to it", () => {

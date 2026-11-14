@@ -35,6 +35,20 @@ export default function Seo({ pageId = "home" }) {
   const { lang, t } = useLanguage();
 
   useEffect(() => {
+    if (pageId === "notFound") {
+      const missing = t.notFound.seo;
+      document.title = missing.title;
+      setMeta("name", "description", missing.description);
+      setMeta("name", "robots", "noindex, follow");
+      setMeta("property", "og:title", missing.title);
+      setMeta("property", "og:description", missing.description);
+      setMeta("property", "og:locale", lang === "hi" ? "hi_IN" : "en_IN");
+      document.head.querySelector('link[rel="canonical"]')?.remove();
+      document.getElementById(LD_ID)?.remove();
+      return;
+    }
+
+    setMeta("name", "robots", "index, follow");
     const page = pageId === "home" ? null : t.pages[pageId];
     const seo = page ? page.seo : t.seo;
     document.title = seo.title;
