@@ -441,7 +441,10 @@ export default function ToothRun({ copy }) {
   const levelRef = useRef(null);
   const livesRef = useRef(null);
   const levelLabel = useRef(copy.level);
-  const api = useRef({ jump() {} });
+  const api = useRef({
+    jump() {},
+    start() {},
+  });
   const shotRef = useRef(null);
   const fileRef = useRef(null);
   const scoreValueRef = useRef(0);
@@ -494,6 +497,7 @@ export default function ToothRun({ copy }) {
       lives: LIVES,
       grace: 0,
       alive: false,
+      ended: false,
     };
 
     const groundY = () => canvas.clientHeight - 28;
@@ -508,6 +512,7 @@ export default function ToothRun({ copy }) {
     };
 
     const reset = () => {
+      state.ended = false;
       state.frame = 0;
       state.speed = BASE_SPEED;
       state.level = 1;
@@ -533,6 +538,7 @@ export default function ToothRun({ copy }) {
 
     const finish = () => {
       state.alive = false;
+      state.ended = true;
       const best = Math.max(readBest(), state.score);
       saveBest(best);
       if (bestRef.current) bestRef.current.textContent = String(best);
@@ -558,7 +564,11 @@ export default function ToothRun({ copy }) {
       });
     };
 
+    const start = () => {
+      if (!state.alive) reset();
+    };
     const jump = () => {
+      if (state.ended) return;
       if (!state.alive) {
         reset();
         return;
@@ -569,6 +579,7 @@ export default function ToothRun({ copy }) {
       }
     };
     api.current.jump = jump;
+    api.current.start = start;
 
     const onKey = (event) => {
       if (event.code !== "Space" && event.code !== "ArrowUp") return;
@@ -892,7 +903,7 @@ export default function ToothRun({ copy }) {
         <canvas ref={canvasRef} className="run__canvas" aria-hidden="true" />
         {phase === "ready" ? (
           <div className="run__overlay">
-            <button type="button" className="btn btn--primary" onClick={() => api.current.jump()}>
+            <button type="button" className="btn btn--primary" onClick={() => api.current.start()}>
               {copy.play}
             </button>
           </div>
@@ -905,7 +916,7 @@ export default function ToothRun({ copy }) {
             {copy.score} {finalScore}
           </p>
           <div className="run__actions">
-            <button type="button" className="btn btn--primary" onClick={() => api.current.jump()}>
+            <button type="button" className="btn btn--primary" onClick={() => api.current.start()}>
               {copy.again}
             </button>
             <button type="button" className="btn btn--outline" onClick={challengeFriend}>
